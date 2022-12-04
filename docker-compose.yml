@@ -1,7 +1,7 @@
 services:
-  magicsports-back:
-    container_name: magicsports-back
-    build: .
+  anti-fraud:
+    container_name: anti-fraud
+    build: Dockerfile.ts
     restart: always
     env_file:
      - .env
@@ -10,7 +10,18 @@ services:
     ports:
       - $PORT:$PORT
     depends_on:
-      - mongodb
+      - postgres
+
+  ml:
+    container_name: ml
+    build: Dockerfile.py
+    restart: always
+    env_file:
+     - .env
+    expose:
+      - $MLPORT
+    ports:
+      - $MLPORT:$MLPORT
 
   postgres:
     image: postgres
