@@ -1,19 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import Auth from "../repository/credentials.js";
+import { Token } from "../services/credentialsService.js";
 
-async function authMiddleware(req: Request, res: Response, next: NextFunction) {
+async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
   const { token }: Token = req.params;
+
   if (!token) {
     throw { type: "authentication", message: "Denied Acess!" };
   }
-  const result = await Auth.findToken({ token });
 
-  if (!result) {
-    throw { type: "authentication", message: "Denied Acess!" };
-  }
-  next();
+  await Token.Validate(token);
+
+  return next();
 }
 
 type Token = { token?: string };
 
-export default authMiddleware;
+export default AuthMiddleware;
