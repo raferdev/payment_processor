@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from tensorflow import keras
 from tensorflow.keras import layers
-
+from flask_expects_json import expects_json
 from keras.applications import ResNet50
 import flask
 from flask import jsonify
@@ -152,12 +152,14 @@ schema = {
         "transaction_amount": { "type": "string" },
         "device_id": { "type": "number" },
     },
-"required": ["email"]
+"required": ["transaction_id","merchant_id","card_number","transaction_date","transaction_amount","device_id"]
 }
 
 app = flask.Flask(__name__)
 
 @app.route("/", methods=["POST"])
+
+@expects_json(schema)
 
 def predict():
     if flask.request.method == "POST":
