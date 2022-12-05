@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 
-async function heathCheck(req: Request, res: Response) {}
+async function healthCheck(req: Request, res: Response) {
+  return res.sendStatus(200);
+}
 
-export default heathCheck;
+export default healthCheck;

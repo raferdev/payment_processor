@@ -6,7 +6,7 @@ import PaymentSchemaMiddleware from "../middlewares/schemaMiddleware.js";
 const apiRouter = Router();
 
 apiRouter.post(
-  "/",
+  "/:token",
   AuthMiddleware,
   PaymentSchemaMiddleware,
   DispatchingController

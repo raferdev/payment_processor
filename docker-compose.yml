@@ -1,7 +1,7 @@
 services:
   anti-fraud:
     container_name: anti-fraud
-    build: Dockerfile.ts
+    build: .
     restart: always
     env_file:
      - .env
@@ -11,19 +11,28 @@ services:
       - $PORT:$PORT
     depends_on:
       - postgres
+      - ml-services
+    networks:
+      - cloudwalk_network
 
-  ml:
-    container_name: ml
-    build: Dockerfile.py
+  ml-services:
+    container_name: ml-services
+    build: .
     restart: always
     env_file:
      - .env
     expose:
-      - $MLPORT
-    ports:
-      - $MLPORT:$MLPORT
+      - 8888
+    networks:
+    - cloudwalk_network
 
   postgres:
     image: postgres
+    expose:
+      - $BDPORT
+    ports:
+      - $BDPORT:$BDPORT
     env_file:
      - .env
+    networks:
+      - cloudwalk_network
