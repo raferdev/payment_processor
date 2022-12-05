@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { apiController } from "../controllers/apiController.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const apiRouter = Router();
 
-apiRouter.post("/", apiController.insert);
+apiRouter.post("/", authMiddleware);
 
 export default apiRouter;
