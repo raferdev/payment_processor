@@ -23,7 +23,7 @@ async function Dispathing(payment: PaymentType) {
         };
       }
 
-      const percentage = Math.floor(chance).toFixed(2);
+      const percentage = Math.floor(chance).toFixed(0);
 
       console.log(`ML-SERVICE says: the risk is ${percentage}%`);
 
@@ -35,6 +35,7 @@ async function Dispathing(payment: PaymentType) {
       return;
     })
     .catch((error) => {
+      console.log(error);
       throw {
         type: "Tensorflow Connection",
         message: "Can't connect with server!",
@@ -55,7 +56,6 @@ async function Dispathing(payment: PaymentType) {
     .then((response) => {
       const { code } = response.data;
       if (!code) {
-        recommendation = "Decline";
         return;
       }
       if (code === "C1") {

@@ -1,38 +1,71 @@
 services:
-  anti-fraud:
-    container_name: anti-fraud
-    build: .
+  gateway:
+    container_name: gateway
+    build: ./gateway
     restart: always
     env_file:
-     - .env
+      - .env
     expose:
-      - $PORT
+      - $PORTGAT
     ports:
-      - $PORT:$PORT
+      - $PORTGAT:$PORTGAT
     depends_on:
       - postgres
-      - ml-services
+      - mlservices
+      - rulesservices
+      - redis
     networks:
       - cloudwalk_network
 
-  ml-services:
-    container_name: ml-services
-    build: .
+  mlservices:
+    container_name: mlservices
+    build: ./ml-service
     restart: always
     env_file:
-     - .env
+      - .env
     expose:
-      - 8888
-    networks:
-    - cloudwalk_network
-
-  postgres:
-    image: postgres
-    expose:
-      - $BDPORT
-    ports:
-      - $BDPORT:$BDPORT
-    env_file:
-     - .env
+      - $MLPORT
+    depends_on:
+      - postgres
+      - rulesservices
+      - redis
     networks:
       - cloudwalk_network
+  
+  rulesservices:
+    container_name: rulesservices
+    build: ./rules-service
+    restart: always
+    expose:
+      - $RULESPORT
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - cloudwalk_network
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    expose:
+      - $POSTGRESPORT
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    networks:
+      - cloudwalk_network
+
+  redis:
+    container_name: redis
+    image: redis
+    expose:
+      - $REDISPORT
+    env_file:
+      - .env
+    networks:
+      - cloudwalk_network
+
+networks:
+  cloudwalk_network:
+
