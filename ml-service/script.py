@@ -6,7 +6,7 @@ from tensorflow.keras import layers
 from flask_expects_json import expects_json
 from keras.applications import ResNet50
 import flask
-from flask import jsonify
+from flask import jsonify, json
 import io
 
 file_url = "https://gist.githubusercontent.com/cloudwalk-tests/76993838e65d7e0f988f40f1b1909c97/raw/9ceae962009236d3570f46e59ce9aa334e4e290f/transactional-sample.csv"
@@ -129,22 +129,10 @@ keras.utils.plot_model(model, show_shapes=True, rankdir="LR")
 
 model.fit(train_ds, epochs=50, validation_data=val_ds)
 
-sample = {
-    "transaction_id": 21320405,
-    "merchant_id": 56107,
-    "user_id": 81152,
-    "card_number": "650516******9201",
-    "transaction_date": "2019-12-01T21:24:05.608374",
-    "transaction_amount": 188.68,
-    "device_id": 486,
-}
-
-input_dict = {name: tf.convert_to_tensor([value]) for name, value in sample.items()}
-predictions = model.predict(input_dict)
-
 schema = {
         "type": "object",
         "properties": {
+        "user_id": {"type":"number"},
         "transaction_id": { "type": "string" },
         "merchant_id": { "type": "string" },
         "card_number": { "type": "string" },
@@ -164,13 +152,21 @@ app = flask.Flask(__name__)
 def predict():
     if flask.request.method == "POST":
         if flask.request.headers.get("X-Api-Key")=='cloudwalk-token':
-
-            flask.request.data
-
-
-
-
-            return jsonify({"message": "OK: Authorized"}), 200
+            samplebody = json.loads(flask.request.data)
+            sampledata = {
+                    "user_id": int(samplebody["user_id"]),
+                    "transaction_id": int(samplebody["transaction_id"]),
+                    "merchant_id": int(samplebody["merchant_id"]),
+                    "card_number": samplebody["card_number"],
+                    "transaction_date": samplebody["transaction_date"],
+                    "transaction_amount": float(samplebody["transaction_amount"]),
+                    "device_id": int(samplebody["device_id"]),
+            }
+            input_dict = { name: tf.convert_to_tensor([value]) for name, value in sampledata.items() }
+            predictions = model.predict(input_dict)
+            percentage = 100 * predictions[0][0]
+            print (percentage)
+            return jsonify({"message": percentage}), 200
         else:
             return jsonify({"message": "ERROR: Unauthorized"}), 401
 
