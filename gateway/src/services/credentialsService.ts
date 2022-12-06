@@ -1,4 +1,4 @@
-import Auth from "../repository/credentials.js";
+import Auth from "../repository/credentialsRepository.js";
 
 async function Validate(token: Token) {
   const result = await Auth.findToken({ token });
