@@ -1,15 +1,17 @@
 import Joi from "joi";
 
 export const paymentShema = Joi.object<PaymentType>({
-  transaction_id: Joi.string().required(),
-  merchant_id: Joi.string().required(),
+  user_id: Joi.number().required(),
+  transaction_id: Joi.number().required(),
+  merchant_id: Joi.number().required(),
   card_number: Joi.string().required(),
   transaction_date: Joi.string().required(),
-  transaction_amount: Joi.string().required(),
+  transaction_amount: Joi.number().required(),
   device_id: Joi.number().required(),
 });
 
 export interface PaymentType {
+  user_id: number;
   transaction_id: number;
   merchant_id: number;
   card_number: number;

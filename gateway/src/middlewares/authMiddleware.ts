@@ -3,7 +3,6 @@ import { Token } from "../services/credentialsService.js";
 
 async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
   const { token }: Token = req.params;
-  console.log(token);
 
   if (!token) {
     throw { type: "authentication", message: "Denied Acess!" };
