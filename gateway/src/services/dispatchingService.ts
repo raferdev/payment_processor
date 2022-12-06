@@ -2,35 +2,44 @@ import { PaymentType } from "../schemas/apiSchemas.js";
 import axios from "axios";
 
 async function Dispathing(payment: PaymentType) {
+  const predictServer = process.env.ML_SERVER;
+
   const config = {
     headers: {
-      Authorization: `Bearer `,
+      "X-Api-Key": "cloudwalk-token",
     },
   };
-  await axios
-    .post("http://localhost:8888/", payment, config)
-    .then((response) => {
-      const { code } = response.data;
 
-      if (!code) {
+  await axios
+    .post(predictServer, payment, config)
+    .then((response) => {
+      const { chance } = response.data;
+      if (!chance || typeof chance !== "number") {
         throw {
           type: "Tensorflow response Error!",
-          message: "Tensorflow code fail!",
+          message: "Tensorflow message fail!",
         };
       }
 
-      if (code !== "00") {
+      const percentage = Math.floor(chance).toFixed(2);
+
+      console.log(`ML-SERVICE says: the risk is ${percentage}%`);
+
+      if (chance >= 80) {
         throw { type: "Payment Denied", message: "Cancelling transaction" };
       }
+
       return;
     })
     .catch((error) => {
+      console.log(error.message);
       throw {
         type: "Tensorflow Connection",
         message: "Can't connect with server!",
       };
     });
-  await axios
+
+  /* await axios
     .post("http://localhost:6000/", payment, config)
     .then((response) => {
       const { code } = response.data;
@@ -51,7 +60,7 @@ async function Dispathing(payment: PaymentType) {
         message: "Can't connect with server!",
       };
     });
-
+ */
   return;
 }
 

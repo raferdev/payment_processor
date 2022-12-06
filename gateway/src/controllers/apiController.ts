@@ -5,8 +5,8 @@ import Dispathing from "../services/dispatchingService.js";
 async function DispatchingController(req: Request, res: Response) {
   const payment: PaymentType = req.body;
 
-  /* await Dispathing(payment);
-   */
+  await Dispathing(payment);
+
   return res.sendStatus(200);
 }
 

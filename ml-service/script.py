@@ -8,18 +8,17 @@ from keras.applications import ResNet50
 import flask
 from flask import jsonify, json
 import io
+from tensorflow.keras.layers import IntegerLookup
+from tensorflow.keras.layers import Normalization
+from tensorflow.keras.layers import StringLookup
+
 
 file_url = "https://gist.githubusercontent.com/cloudwalk-tests/76993838e65d7e0f988f40f1b1909c97/raw/9ceae962009236d3570f46e59ce9aa334e4e290f/transactional-sample.csv"
 dataframe = pd.read_csv(file_url)
 
-# Commented out IPython magic to ensure Python compatibility.
-val_dataframe = dataframe.sample(frac=0.2, random_state=1337)
+val_dataframe = dataframe.sample(frac=0.2, random_state=2000)
 train_dataframe = dataframe.drop(val_dataframe.index)
 
-print(
-    "Using %d samples for training and %d for validation"
-#     % (len(train_dataframe), len(val_dataframe))
-)
 
 def dataframe_to_dataset(dataframe):
     dataframe = dataframe.copy()
@@ -36,47 +35,34 @@ for x, y in train_ds.take(1):
     print("Input:", x)
     print("Target:", y)
 
-train_ds = train_ds.batch(32)
-val_ds = val_ds.batch(32)
-
-from tensorflow.keras.layers import IntegerLookup
-from tensorflow.keras.layers import Normalization
-from tensorflow.keras.layers import StringLookup
-
+train_ds = train_ds.batch(50)
+val_ds = val_ds.batch(50)
 
 def encode_numerical_feature(feature, name, dataset):
-    # Create a Normalization layer for our feature
     normalizer = Normalization()
 
-    # Prepare a Dataset that only yields our feature
     feature_ds = dataset.map(lambda x, y: x[name])
     feature_ds = feature_ds.map(lambda x: tf.expand_dims(x, -1))
 
-    # Learn the statistics of the data
     normalizer.adapt(feature_ds)
 
-    # Normalize the input feature
     encoded_feature = normalizer(feature)
     return encoded_feature
 
 
 def encode_categorical_feature(feature, name, dataset, is_string):
     lookup_class = StringLookup if is_string else IntegerLookup
-    # Create a lookup layer which will turn strings into integer indices
+
     lookup = lookup_class(output_mode="binary")
 
-    # Prepare a Dataset that only yields our feature
     feature_ds = dataset.map(lambda x, y: x[name])
     feature_ds = feature_ds.map(lambda x: tf.expand_dims(x, -1))
 
-    # Learn the set of possible string values and assign them a fixed integer index
     lookup.adapt(feature_ds)
 
-    # Turn the string input into integer indices
     encoded_feature = lookup(feature)
     return encoded_feature
 
-# Categorical features encoded as integers
 transaction_id = keras.Input(shape=(1,), name="transaction_id", dtype="int64")
 merchant_id = keras.Input(shape=(1,), name="merchant_id", dtype="int64")
 user_id = keras.Input(shape=(1,), name="user_id", dtype="int64")
@@ -133,11 +119,11 @@ schema = {
         "type": "object",
         "properties": {
         "user_id": {"type":"number"},
-        "transaction_id": { "type": "string" },
-        "merchant_id": { "type": "string" },
+        "transaction_id": { "type": "number" },
+        "merchant_id": { "type": "number" },
         "card_number": { "type": "string" },
         "transaction_date": { "type": "string" },
-        "transaction_amount": { "type": "string" },
+        "transaction_amount": { "type": "number" },
         "device_id": { "type": "number" },
     },
 "required": ["transaction_id","merchant_id","card_number","transaction_date","transaction_amount","device_id"]
@@ -152,21 +138,11 @@ app = flask.Flask(__name__)
 def predict():
     if flask.request.method == "POST":
         if flask.request.headers.get("X-Api-Key")=='cloudwalk-token':
-            samplebody = json.loads(flask.request.data)
-            sampledata = {
-                    "user_id": int(samplebody["user_id"]),
-                    "transaction_id": int(samplebody["transaction_id"]),
-                    "merchant_id": int(samplebody["merchant_id"]),
-                    "card_number": samplebody["card_number"],
-                    "transaction_date": samplebody["transaction_date"],
-                    "transaction_amount": float(samplebody["transaction_amount"]),
-                    "device_id": int(samplebody["device_id"]),
-            }
-            input_dict = { name: tf.convert_to_tensor([value]) for name, value in sampledata.items() }
+            sample = json.loads(flask.request.data)
+            input_dict = { name: tf.convert_to_tensor([value]) for name, value in sample.items() }
             predictions = model.predict(input_dict)
-            percentage = 100 * predictions[0][0]
-            print (percentage)
-            return jsonify({"message": percentage}), 200
+            chance = 100 * predictions[0][0]
+            return jsonify({"chance": chance, "transaction_id": sample["transaction_id"]}), 200
         else:
             return jsonify({"message": "ERROR: Unauthorized"}), 401
 
