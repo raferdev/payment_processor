@@ -2,7 +2,9 @@ import { PaymentType } from "../schemas/apiSchemas.js";
 import axios from "axios";
 
 async function Dispathing(payment: PaymentType) {
+  let recommendation = "approve";
   const predictServer = process.env.ML_SERVER;
+  const rulesServer = process.env.RULES_SERVER;
 
   const config = {
     headers: {
@@ -26,41 +28,58 @@ async function Dispathing(payment: PaymentType) {
       console.log(`ML-SERVICE says: the risk is ${percentage}%`);
 
       if (chance >= 80) {
-        throw { type: "Payment Denied", message: "Cancelling transaction" };
+        recommendation = "Decline";
+        return;
       }
 
       return;
     })
     .catch((error) => {
-      console.log(error.message);
       throw {
         type: "Tensorflow Connection",
         message: "Can't connect with server!",
       };
     });
 
-  /* await axios
-    .post("http://localhost:6000/", payment, config)
+  if (recommendation === "Decline") {
+    throw {
+      type: "Cancel",
+      transaction_id: payment.transaction_id,
+      recommendation: "Decline",
+      status: 406,
+    };
+  }
+
+  await axios
+    .post(rulesServer, payment)
     .then((response) => {
       const { code } = response.data;
       if (!code) {
-        throw {
-          type: "Ruby server response Error!",
-          message: "Ruby code fail!",
-        };
+        recommendation = "Decline";
+        return;
       }
-      if (code !== "00") {
-        throw { type: "Payment Denied", message: "Cancelling transaction" };
+      if (code === "C1") {
+        recommendation = "Decline";
+        return;
       }
       return;
     })
     .catch((error) => {
       throw {
-        type: "Ruby on Rails Connection",
+        type: "Ruby Connection",
         message: "Can't connect with server!",
       };
     });
- */
+
+  if (recommendation === "Decline") {
+    throw {
+      type: "Cancel",
+      transaction_id: payment.transaction_id,
+      recommendation: "Decline",
+      status: 406,
+    };
+  }
+
   return;
 }
 

@@ -12,9 +12,8 @@ export function errorHandlerMiddleware(
   next: NextFunction
 ) {
   console.log(err);
-
   if (isAppError(err)) {
-    return res.status(errorTypeToStatusCode(err.type)).send(err.message);
+    return res.status(errorTypeToStatusCode(err.type)).send(err);
   }
 
   return res.sendStatus(500);

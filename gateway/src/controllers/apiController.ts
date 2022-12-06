@@ -7,7 +7,12 @@ async function DispatchingController(req: Request, res: Response) {
 
   await Dispathing(payment);
 
-  return res.sendStatus(200);
+  return res.status(200).send({
+    type: "OK",
+    transaction_id: payment.transaction_id,
+    recommendation: "Aprove",
+    status: 200,
+  });
 }
 
 export default DispatchingController;
