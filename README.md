@@ -20,21 +20,39 @@
 
 ## 🧐 Question 1 <a name = "1"></a>
 
-#### 1.1 Explain the money flow and the information flow in the acquirer market and the role of the main players.
+#### 1.1
 
-So the custumer, like me a fewer days before, think the process is just check your password and if have funds, big mistake.
+So the custumer, like me a fewer days before, think the process is just check your password and funds, big mistake.
 
-Client click on "confirm" using your machine card or other payment connector and the info flows like:
+Client click on "confirm" using your machine card or other payment connector and the info flows like: (When exist Sub-Acquirer)
 
-- -> Gateway -> Sub-Acquirer -> Acquirer ->
+- -> Gateway -> Sub-Acquirer -> Acquirer -> Card brands -> Issuing Bank.
+
+And the money flows.
+
+- -> Issuing Bank -> Card Brands -> Acquirer -> Sub-Aquirer -> Gateway -> Founds to Merchant
+
+Some steps depending of the business and payment method are the same or dont are needed.
+
+#### 1.2
+
+- Acquirer is the part specializes in processing payments, that can offer to merchant multiple payment methods. The acquirer will credit the merchant with the founds.
+- Sub-aquirer can process the payment and connect the merchant too but don't have all autonomy, so it's connect the merchant to acquirer.
+- Gateway is responsable to communicate the transactions to the players like acquirer, bank issuer... and if approve or not.
+
+On the flow that it's show on 1.1 the merchant not necessarly needs the sub-acquirer to intermediate the process, but the sub-aquirer can facility the payment process. The acquirer on other hand is are always required because the acquirer how transfer the funds to merchant and confirm the settlement. And the gateway payment is the way all these players can communicate and confirm or not the process, depending of the answer of these the gateway can reject the payment.
+
+#### 1.3
+
+The chargebacks occur when customer don't recognize the payment like valid, when it's by fraud, abuse... And the acconting already happened, so the payment must be inspected and the opposite part have to prove validity, causing feels and cost to process. On the other hand the cancel of payment occur before the acconting, a day or hours and the transaction only "desapear" dont ocasionating more cost's. The chargebacks hurts merchant's chargeback-to-transaction ratio and thats will impact his credibility, besides have to pay feels.This chargebacks only occur when are know fraud, so it's much better detect this fraud before occur, and with caution to don't reject valid operations.
 
 ## 🧐 Question 2 <a name = "2"></a>
 
-#### 2.1 Analyze the data provided and present your conclusions (consider that all transactions are made using a mobile device).
+#### 2.1
 
 The first thing that is visible is the lack on device_id in some rows, but after analyzing better this does not look to make a difference. Trying to understand a pattern the multiple transactions over a short period looks like relevant but nothing i see is deterministic.
 
-#### 2.2 In addition to the spreadsheet data, what other data would you look at to try to find patterns of possible frauds?
+#### 2.2
 
 A GPS location of the transaction to determinate nearly impossible payment on different locations. History of payments of a user, merchant, device to understand some pattern maybe, providing a rate of risk. And maybe a obvious thing is a list of valid devices_id, merchants_id...
 
