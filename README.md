@@ -28,15 +28,15 @@ Client click on "confirm" using your machine card or other payment connector and
 
 - -> Gateway -> Sub-Acquirer -> Acquirer ->
 
-## 🧐 Question 2<a name = "2"></a>
+## 🧐 Question 2 <a name = "2"></a>
 
-#### 1.1 Explain the money flow and the information flow in the acquirer market and the role of the main players.
+#### 2.1 Analyze the data provided and present your conclusions (consider that all transactions are made using a mobile device).
 
-So the custumer, like me a fewer days before, think the process is just check your password and if have funds, big mistake.
+The first thing that is visible is the lack on device_id in some rows, but after analyzing better this does not look to make a difference. Trying to understand a pattern the multiple transactions over a short period looks like relevant but nothing i see is deterministic.
 
-Client click on "confirm" using your machine card or other payment connector the info flows like:
+#### 2.2 In addition to the spreadsheet data, what other data would you look at to try to find patterns of possible frauds?
 
-- Gateway -> Acquirer
+A GPS location of the transaction to determinate nearly impossible payment on different locations. History of payments of a user, merchant, device to understand some pattern maybe, providing a rate of risk. And maybe a obvious thing is a list of valid devices_id, merchants_id...
 
 ## 🧐 Question 3 <a name = "3"></a>
 
