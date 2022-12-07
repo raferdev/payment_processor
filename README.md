@@ -222,3 +222,32 @@ http://localhost:5050/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
 ## 🎉 Links <a name = "links"></a>
 
 <img align="right" height="100px" src="./data/cloudwalk.gif" alt="Project logo">
+
+**1.1, 1.2, 1.3, 2.1, 2.2**
+
+- Payment Authorization vs. Settlement: What’s the Difference? <a href="https://www.tokenex.com/blog/payment-authorization-vs-settlement-whats-the-difference/">page.</a>
+
+- Payments Explained <a href="https://business.ebanx.com/en/resources/payments-explained">page.</a>
+
+- Differences Between Refund, Cancel, and Chargeback? <a href="https://mahmutgulerce.com/fintech-101-difference-between-cancel-refund-chargeback/">page.</a>
+
+- What’s the difference between a merchant acquirer and payment processor? <a href="https://www.globalprocessing.com/news/blog/difference-between-merchant-acquirer-and-payment-processor">page.</a>
+
+- What is the role of financial agents in the payment flow of an application in Brazil? <a href="https://help.vtex.com/tutorial/what-is-the-difference-between-acquirer-brand-gateway-and-sub-acquirer-in-brazil--1dyPJ3gQCCO4ea2o6OMgCi#gateway">page.</a>
+- How Payment Disputes Impact Both Merchants and Consumers <a href="https://chargebacks911.com/disputes/">page.</a>
+
+**3.1**
+
+- Get Started: 3 Ways to Load CSV files into Colab <a href="https://towardsdatascience.com/3-ways-to-load-csv-files-into-colab-7c14fcbdcb92">page.</a>
+- Keras Documentation <a href="https://keras.io/getting_started/">page.</a>
+
+- Structured data classification from scratch
+  <a href="https://keras.io/examples/structured_data/structured_data_classification_from_scratch/">page.</a>
+- TensorFlow Doc <a href="https://www.tensorflow.org/api_docs/python/tf">page.</a>
+- Building a simple Keras + deep learning REST API <a href="https://blog.keras.io/building-a-simple-keras-deep-learning-rest-api.html">page.</a>
+- Basic classification: Classify images of clothing <a href="https://www.tensorflow.org/tutorials/keras/classification">page.</a>
+- Add a Authentication Header to Your Python Flask App <a href="https://blog.ruanbekker.com/blog/2018/06/01/add-a-authentication-header-to-your-python-flask-app/">page.</a>
+
+- A Simple Keras + deep learning REST API. <a href="https://github.com/jrosebr1/simple-keras-rest-api">page.</a>
+
+- The Rails Command Line. <a href="https://guides.rubyonrails.org/command_line.html">page.</a>
