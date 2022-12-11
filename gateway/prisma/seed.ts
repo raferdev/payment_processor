@@ -1,7 +1,7 @@
 import prisma from "../src/config/prisma.js";
 
 async function credentials() {
-  await prisma.validAcess.createMany({
+  await prisma.validAccess.createMany({
     data: [
       {
         token:

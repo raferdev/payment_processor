@@ -1,7 +1,7 @@
 import prisma from "../config/prisma.js";
 
 async function findToken({ token }: Token) {
-  return await prisma.validAcess.findMany({
+  return await prisma.validAccess.findMany({
     where: {
       token,
     },

@@ -5,7 +5,9 @@
     "esModuleInterop": true,
     "target": "ESNext",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "typeRoots": ["./node_modules/@types/", "./src/@types/"],
+    "types": ["jest", "node", "@types/jest"]
   },
   "include": ["src/**/*"],
   "ts-node": {
