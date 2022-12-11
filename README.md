@@ -6,7 +6,7 @@
 
 ---
 
-<p align="center"> First of all this project make me had a lot of fun, and learn a lot, thanks for the opportunity. Here you will see the answer about some questions and a self implement solution of payment analysis, i hope you enjoy it. This project (Question #3) use, docker, docker-compose, python, machine learning, ruby on rais and nodejs. It's a first time using some of these technologies.
+<p align="center"> First of all this project make me had a lot of fun, and learn a lot, thanks for the opportunity. Here you will see the answer about some questions and a self implement solution of payment analysis, i hope you enjoy it. This project (Question #3) use, docker, docker-compose, python, machine learning, ruby on rails and nodejs. It's a first time using some of these technologies.
 </p>
 
 ## 📝 Table of Contents
@@ -138,13 +138,13 @@ Use on terminal:
 docker-compose up
 ```
 
-_The attached console will show "Hello i'm running on port = (PORT)" and after some mongodb logs._
+_The attached console will show "SERVER UP: ON PORT ${PORT}"._
 
 ---
 
 ## 🎈 Usage <a name="3.2"></a>
 
-ow you will need one tool to make requests and interact whith your API. Some famous API Clients are <a href="https://insomnia.rest/download">Insomnia</a>, <a href="https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client">Thunder CLient</a> to VSCode users, <a href="https://www.postman.com/">Postman</a> and many others, like browsers plugins. If you dont use to complex jobs any of these will help you.
+Now you will need one tool to make requests and interact whith your API. Some famous API Clients are <a href="https://insomnia.rest/download">Insomnia</a>, <a href="https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client">Thunder CLient</a> to VSCode users, <a href="https://www.postman.com/">Postman</a> and many others, like browsers plugins. If you dont use to complex jobs any of these will help you.
 
 - **GUIDE** :
 
