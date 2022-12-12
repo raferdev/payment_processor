@@ -5,6 +5,10 @@ async function findToken({ token }: Token) {
     where: {
       token,
     },
+    select: {
+      user: true,
+      are_valid: true,
+    },
   });
 }
 

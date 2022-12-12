@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id          Int           @id @default(autoincrement())
-  user        Int           @unique
+  user        String        @unique
   password    String
   created_at  DateTime      @default(now())
   validAccess validAccess[]
