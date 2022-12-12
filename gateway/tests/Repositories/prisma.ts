@@ -12,6 +12,14 @@ async function addMany(manyValidAcess: uniqueValidAccess[]) {
   return await prisma.validAccess.createMany({ data: manyValidAcess });
 }
 
+async function find(user: string) {
+  return await prisma.validAccess.findFirstOrThrow({
+    where: {
+      user,
+    },
+  });
+}
+
 async function updateToken(user: string, token: string) {
   return await prisma.validAccess.update({
     where: {
@@ -22,15 +30,24 @@ async function updateToken(user: string, token: string) {
     },
   });
 }
+async function disconnect() {
+  return await prisma.$disconnect();
+}
 
 const validAccess = {
+  find,
   clean,
   add,
   addMany,
   updateToken,
 };
 
-export default validAccess;
+const Repositories = {
+  validAccess,
+  disconnect,
+};
+
+export default Repositories;
 
 type uniqueValidAccess = {
   token: string;
