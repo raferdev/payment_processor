@@ -1,5 +1,5 @@
-import Repositories from "../Repositories/prisma.js";
-import Factory from "../Factory/validAccess.js";
+import Repositories from "../Repositories/index.js";
+import Factory from "../Factory/index.js";
 
 beforeEach(async () => {
   await Repositories.validAccess.clean();
@@ -60,5 +60,6 @@ describe("PRISMA CONNECTIVITY TEST: CRUD ", () => {
 });
 
 afterAll(async () => {
-  await Repositories.disconnect();
+  Repositories.validAccess.disconnect();
+  Repositories.redis.disconnect();
 });

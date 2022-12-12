@@ -13,13 +13,7 @@ function newToken() {
   return token;
 }
 
-const validAccess = {
+export const validAccess = {
   newOne,
   newToken,
 };
-
-const Factory = {
-  validAccess,
-};
-
-export default Factory;

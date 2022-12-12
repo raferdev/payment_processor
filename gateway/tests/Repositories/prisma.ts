@@ -30,24 +30,19 @@ async function updateToken(user: string, token: string) {
     },
   });
 }
+
 async function disconnect() {
   return await prisma.$disconnect();
 }
 
-const validAccess = {
+export const validAccess = {
   find,
   clean,
   add,
   addMany,
   updateToken,
-};
-
-const Repositories = {
-  validAccess,
   disconnect,
 };
-
-export default Repositories;
 
 type uniqueValidAccess = {
   token: string;

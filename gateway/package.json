@@ -8,7 +8,7 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc && npx prisma generate && npx prisma run deploy",
     "test:unit": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --coverage --testPathPattern=tests/Units",
-    "test:integrate": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --testPathPattern=tests/Integration",
+    "test:integrate": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --detectOpenHandles --testPathPattern=tests/Integration",
     "test": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i",
     "start": "npx prisma generate && npx prisma migrate dev && npx prisma db seed && nodemon src/server.ts"
   },
