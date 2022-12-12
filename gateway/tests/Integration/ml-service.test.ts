@@ -10,6 +10,7 @@ describe("ML-SERVICE TEST: AUTH, SCHEMA, AND RATING", () => {
     const user = Factory.redis.newUser();
 
     const result = await Repositories.redis.setLog(user, 4);
+
     expect(result).toEqual("OK");
   });
 
