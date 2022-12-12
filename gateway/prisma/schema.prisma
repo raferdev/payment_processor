@@ -10,8 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id          Int           @id @default(autoincrement())
+  user        Int           @unique
+  password    String
+  created_at  DateTime      @default(now())
+  validAccess validAccess[]
+}
+
 model validAccess {
-  id    Int    @id @default(autoincrement())
-  token String @unique
-  user  String @unique
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  user_id    Int
+  user       User     @relation(fields: [user_id], references: [id])
+  are_valid  Boolean
+  created_at DateTime @default(now())
 }

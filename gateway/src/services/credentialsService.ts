@@ -1,4 +1,5 @@
 import Auth from "../repository/credentialsRepository.js";
+import jwt from "jsonwebtoken";
 
 async function Validate(token: Token) {
   const result = await Auth.findToken({ token });
