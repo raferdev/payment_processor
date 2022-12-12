@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 import numpy as np
 import pandas as pd
@@ -137,7 +138,7 @@ app = flask.Flask(__name__)
 
 def predict():
     if flask.request.method == "POST":
-        if flask.request.headers.get("X-Api-Key")=='cloudwalk-token':
+        if flask.request.headers.get("X-Api-Key")== os.getenv('INTERN_TOKEN'):
             sample = json.loads(flask.request.data)
             input_dict = { name: tf.convert_to_tensor([value]) for name, value in sample.items() }
             predictions = model.predict(input_dict)

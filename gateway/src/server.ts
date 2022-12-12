@@ -1,7 +1,6 @@
-import "dotenv/config";
 import app from "./app.js";
+import _env from "./config/env.js";
 
-const PORTGAT = +process.env.PORTGAT | 5000;
-app.listen(process.env.PORTGAT, () => {
-  console.log(`SERVER UP: ON PORT ${PORTGAT}`);
+app.listen(_env.PORT, () => {
+  console.log(`SERVER UP: ON PORT ${_env.PORT}`);
 });

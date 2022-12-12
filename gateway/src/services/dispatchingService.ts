@@ -1,19 +1,18 @@
 import { PaymentType } from "../schemas/apiSchemas.js";
 import axios from "axios";
+import _env from "../config/env.js";
 
 async function Dispathing(payment: PaymentType) {
   let recommendation = "approve";
-  const predictServer = process.env.ML_SERVER;
-  const rulesServer = process.env.RULES_SERVER;
 
   const config = {
     headers: {
-      "X-Api-Key": "cloudwalk-token",
+      "X-Api-Key": _env.INTERN_TOKEN,
     },
   };
 
   await axios
-    .post(predictServer, payment, config)
+    .post(_env.ML_SERVER, payment, config)
     .then((response) => {
       const { chance } = response.data;
       if (!chance || typeof chance !== "number") {
@@ -52,7 +51,7 @@ async function Dispathing(payment: PaymentType) {
   }
 
   await axios
-    .post(rulesServer, payment)
+    .post(_env.RULES_SERVER, payment)
     .then((response) => {
       const { code } = response.data;
       if (!code) {

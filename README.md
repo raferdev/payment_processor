@@ -6,7 +6,7 @@
 
 ---
 
-<p align="center"> First of all this project make me had a lot of fun, and learn a lot, thanks for the opportunity. Here you will see the answer about some questions and a self implement solution of payment analysis, i hope you enjoy it. This project (Question #3) use, docker, docker-compose, python, machine learning, ruby on rails and nodejs. It's a first time using some of these technologies.
+<p align="center"> First of all this project make me had a lot of fun, and learn a lot, thanks for the opportunity. Here you will see the answer about some questions and a self implement solution of payment analysis, i hope you enjoy it. This project (Question #3) use, docker, docker-compose, python, machine learning, ruby on rails, nodejs and testing with jest. It's a first time using some of these technologies.
 </p>
 
 ## 📝 Table of Contents
@@ -64,7 +64,7 @@ On this project i implement a multisystem solution, one system will process the 
 
 <img src="./data/mindmap.jpg">
 
-- **Gateway**: Building on NodeJS this choice occur first because i'm more acquainted using it, and seccond is because NodeJS(Javascript) is very good with promises and requests. I used Redis to reject fast multiple transactions of the same user, and postgres to store credentials.
+- **Gateway**: Building on NodeJS this choice occur first because i'm more acquainted using it, and seccond is because NodeJS(Javascript) is very good with promises and requests. I used Redis to reject fast multiple transactions of the same user, and postgres to store credentials.Here you can see:
 
 - **ML-Service**: Building using tensorflow, keras and flask, this choice is because machine larning can show the best option when static rules don't block suspect transactions. And this stack is the more fast to learn and implement in on few days using some templates and tutorials.
 
