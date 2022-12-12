@@ -5,7 +5,7 @@ async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
   const { token }: Token = req.params;
 
   if (!token) {
-    throw { type: "authentication", message: "Denied Acess!" };
+    throw { type: "unauthorized", message: "Denied Acess!" };
   }
 
   await Token.Validate(token);

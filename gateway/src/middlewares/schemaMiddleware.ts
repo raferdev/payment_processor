@@ -11,7 +11,7 @@ function PaymentSchemaMiddleware(
   const validate = paymentShema.validate(payment);
 
   if (validate.error) {
-    throw { type: "schema_validation", message: "Request Error!" };
+    throw { type: "wrong_schema", message: "Request Error!" };
   }
 
   next();

@@ -6,10 +6,9 @@
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "dist",
-    "typeRoots": ["./node_modules/@types/", "./src/@types/"],
     "types": ["jest", "node", "@types/jest"]
   },
-  "include": ["src/**/*"],
+  "include": ["./src/**/*", "tests/**/*.ts"],
   "ts-node": {
     "esm": true
   }
