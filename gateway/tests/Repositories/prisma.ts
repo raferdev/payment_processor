@@ -1,32 +1,35 @@
 import prisma from "../../src/config/prisma.js";
 
 async function clean() {
-  return await prisma.validAccess.deleteMany();
+  await prisma.validAccess.deleteMany();
+  await prisma.user.deleteMany();
+
+  return;
 }
 
-async function add(validAcess: uniqueValidAccess) {
-  return await prisma.validAccess.create({ data: validAcess });
-}
+async function add(validAccess: uniqueValidAccess) {
+  const result = await prisma.user.create({ data: validAccess.newUser });
 
-async function addMany(manyValidAcess: uniqueValidAccess[]) {
-  return await prisma.validAccess.createMany({ data: manyValidAcess });
+  return await prisma.validAccess.create({
+    data: { user_id: result.id, token: validAccess.token, are_valid: true },
+  });
 }
 
 async function find(user: string) {
-  return await prisma.validAccess.findFirstOrThrow({
+  return await prisma.user.findFirstOrThrow({
     where: {
       user,
     },
   });
 }
 
-async function updateToken(user: string, token: string) {
+async function updateToken(lastToken: string, token: string) {
   return await prisma.validAccess.update({
     where: {
-      user: user,
+      token: lastToken,
     },
     data: {
-      token: token,
+      token,
     },
   });
 }
@@ -39,12 +42,14 @@ export const validAccess = {
   find,
   clean,
   add,
-  addMany,
   updateToken,
   disconnect,
 };
 
 type uniqueValidAccess = {
   token: string;
-  user: string;
+  newUser: {
+    user: string;
+    password: string;
+  };
 };

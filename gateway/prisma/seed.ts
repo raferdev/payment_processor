@@ -36,7 +36,9 @@ async function admin() {
   const result = await prisma.user.create({ data: admin });
 
   const token = jwt.sign({ id: "00000" }, JWT_SECRET, { expiresIn: "12h" });
-  console.log(token);
+
+  console.log(`ACESS TOKEN:${token}`);
+
   await prisma.validAccess.createMany({
     data: [{ user_id: result.id, token: token, are_valid: true }],
   });

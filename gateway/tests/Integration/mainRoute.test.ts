@@ -31,7 +31,7 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
     jest.clearAllMocks();
 
     const body = Factory.request.data();
-    const user = Factory.validAccess.newOne();
+    const user = await Factory.validAccess.credentials();
     jest.clearAllMocks();
     jest.spyOn(paymentShema, "validate").mockImplementationOnce(() => {
       throw { type: "AuthTest", message: "all ok" };
@@ -40,7 +40,10 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
     try {
       await Repositories.validAccess.add(user);
 
-      const result = await supertest(app).post(`/${user.token}`).send(body);
+      const result = await await supertest(app)
+        .post(`/${user.token}`)
+        .set("authorization", user.newUser.user)
+        .send(body);
       expect(result.body.message).toEqual("all ok");
     } catch (err) {
       expect(err).toBeUndefined();
@@ -51,15 +54,22 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
     jest.clearAllMocks();
 
     const body = Factory.request.data();
-    const user = Factory.validAccess.newOne();
+    const user = await Factory.validAccess.credentials();
 
-    jest.spyOn(axios, "post").mockImplementation(() => {
+    jest.spyOn(axios, "post").mockImplementationOnce(() => {
       throw { type: "firewallTest", message: "all ok" };
     });
     try {
       await Repositories.validAccess.add(user);
-      await supertest(app).post(`/${user.token}`).send(body);
-      const result = await supertest(app).post(`/${user.token}`).send(body);
+      await supertest(app)
+        .post(`/${user.token}`)
+        .set("authorization", user.newUser.user)
+        .send(body);
+      const result = await supertest(app)
+        .post(`/${user.token}`)
+        .set("authorization", user.newUser.user)
+        .send(body);
+
       expect(result.body.type).toEqual("Too much requests");
     } catch (err) {
       expect(err).toBeUndefined();
@@ -69,11 +79,14 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
   it("Wrong body schema, this request must fail", async () => {
     jest.clearAllMocks();
     const body = Factory.request.data();
-    const user = Factory.validAccess.newOne();
+    const user = await Factory.validAccess.credentials();
     delete body.transaction_amount;
     try {
       await Repositories.validAccess.add(user);
-      const result = await supertest(app).post(`/${user.token}`).send(body);
+      const result = await supertest(app)
+        .post(`/${user.token}`)
+        .set("authorization", user.newUser.user)
+        .send(body);
       expect(result.statusCode).toEqual(422);
     } catch (err) {
       expect(err).toBeUndefined();
@@ -81,12 +94,19 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
   });
 
   it("Acceptable request, must return status 200", async () => {
+    jest.clearAllMocks();
     const body = Factory.request.data();
-    const user = Factory.validAccess.newOne();
+    const user = await Factory.validAccess.credentials();
     try {
       await Repositories.validAccess.add(user);
-      const result = await supertest(app).post(`/${user.token}`).send(body);
-      expect(result.statusCode).toEqual(200);
+      const result = await supertest(app)
+        .post(`/${user.token}`)
+        .set("authorization", user.newUser.user)
+        .send(body);
+
+      expect(
+        result.statusCode === 200 || result.statusCode === 406
+      ).toBeTruthy();
     } catch (err) {
       expect(err).toBeUndefined();
     }
