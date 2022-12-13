@@ -4,6 +4,6 @@ import healthCheck from "../controllers/heathCheck.js";
 const healthRouter = Router();
 
 healthRouter.post("/", healthCheck.Check);
-healthRouter.post("/health");
+healthRouter.post("/mlservice", healthCheck.Mlservice);
 
 export default healthRouter;

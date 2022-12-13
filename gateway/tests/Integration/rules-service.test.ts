@@ -9,7 +9,7 @@ describe("ML-SERVICE TEST: AUTH, SCHEMA, AND RATING", () => {
 
     try {
       const result = await supertest(app)
-        .post(`/health/mlservice`)
+        .post(`/health/rulesservice`)
         .set("authorization", "123")
         .send(body);
 

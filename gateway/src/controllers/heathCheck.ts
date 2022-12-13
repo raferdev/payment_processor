@@ -8,10 +8,18 @@ async function Check(req: Request, res: Response) {
 
 async function Mlservice(req: Request, res: Response) {
   const payment = req.body;
+  const authorization = req.headers.authorization;
+
+  let authTest = "";
+  let percentage = -1;
+
+  if (authorization) {
+    authTest = authorization;
+  }
 
   const config = {
     headers: {
-      "X-Api-Key": _env.INTERN_TOKEN,
+      "X-Api-Key": _env.INTERN_TOKEN + authTest,
     },
   };
 
@@ -26,19 +34,21 @@ async function Mlservice(req: Request, res: Response) {
         };
       }
 
-      const percentage = Math.floor(chance).toFixed(0);
+      percentage = +Math.floor(chance).toFixed(0);
 
       console.log(`ML-SERVICE says: the risk is ${percentage}%`);
 
       return;
     })
     .catch((error) => {
-      console.log(error);
       throw {
-        type: "Tensorflow Connection",
-        message: "Can't connect with server!",
+        type: "test",
+        status: error.response.status,
+        message: error.response.statusText,
       };
     });
+
+  return res.status(200).send({ rate: percentage });
 }
 
 const healthCheck = {

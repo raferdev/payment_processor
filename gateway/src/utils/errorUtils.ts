@@ -3,12 +3,15 @@ type AppErrorTypes =
   | "not_found"
   | "unauthorized"
   | "wrong_schema"
-  | "Cancel";
+  | "Cancel"
+  | "test";
 
-export interface AppError {
+export type AppError = {
   type: AppErrorTypes;
+  response?: any;
+  status?: number;
   message: string;
-}
+};
 
 export function isAppError(error: object): error is AppError {
   return (error as AppError).type !== undefined;
