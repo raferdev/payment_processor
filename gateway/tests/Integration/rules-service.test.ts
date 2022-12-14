@@ -3,7 +3,7 @@ import Factory from "../Factory/index.js";
 import supertest from "supertest";
 import app from "../../src/app.js";
 
-describe("ML-SERVICE TEST: AUTH, SCHEMA, AND RATING", () => {
+describe("RULES-SERVICE TEST: AUTH, SCHEMA, AND BLACKLIST", () => {
   it("Send request with invalid intern token, should return error ", async () => {
     const body = Factory.request.data();
 
@@ -24,11 +24,11 @@ describe("ML-SERVICE TEST: AUTH, SCHEMA, AND RATING", () => {
     delete body.card_number;
     try {
       const result = await supertest(app)
-        .post(`/health/mlservice`)
+        .post(`/health/rulesservice`)
         .set("authorization", "")
         .send(body);
 
-      expect(result.status).toEqual(400);
+      expect(result.status).toEqual(204);
     } catch (error) {
       expect(error).toBeUndefined();
     }

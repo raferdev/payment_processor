@@ -51,9 +51,67 @@ async function Mlservice(req: Request, res: Response) {
   return res.status(200).send({ rate: percentage });
 }
 
+async function Rulesservice(req: Request, res: Response) {
+  const payment = req.body;
+  const authorization = req.headers.authorization;
+
+  let authTest = "";
+  let percentage = -1;
+
+  if (authorization) {
+    authTest = authorization;
+  }
+
+  const config = {
+    headers: {
+      authorization: _env.INTERN_TOKEN + authTest,
+    },
+  };
+
+  await axios
+    .post(_env.RULES_SERVER, payment, config)
+    .then((response) => {
+      const { code } = response.data;
+
+      if (response.status === 204) {
+        throw {
+          type: "test",
+          status: response.status,
+          message: "No content",
+        };
+      }
+      if (code === "C1") {
+        throw {
+          type: "test",
+          status: response.status,
+          message: "Blacklist",
+        };
+      }
+      return;
+    })
+    .catch((error) => {
+      if (error.type === "test") {
+        throw {
+          type: "test",
+          status: error.status,
+          message: error.message,
+        };
+      }
+      if (error.response.data.code === "A1") {
+        throw {
+          type: "test",
+          status: error.response.status,
+          message: error.message,
+        };
+      }
+    });
+  return res.status(200).send({ rate: percentage });
+}
+
 const healthCheck = {
   Check,
   Mlservice,
+  Rulesservice,
 };
 
 export default healthCheck;

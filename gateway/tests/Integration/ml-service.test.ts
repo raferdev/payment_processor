@@ -36,6 +36,7 @@ describe("ML-SERVICE TEST: AUTH, SCHEMA, AND RATING", () => {
 
   it("Rating test, should return status 200", async () => {
     const body = Factory.request.data();
+
     try {
       const result = await supertest(app)
         .post(`/health/mlservice`)
