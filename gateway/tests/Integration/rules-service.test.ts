@@ -28,7 +28,7 @@ describe("RULES-SERVICE TEST: AUTH, SCHEMA, AND BLACKLIST", () => {
         .set("authorization", "")
         .send(body);
 
-      expect(result.status).toEqual(204);
+      expect(result.status).toEqual(422);
     } catch (error) {
       expect(error).toBeUndefined();
     }

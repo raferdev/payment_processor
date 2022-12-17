@@ -80,6 +80,7 @@ async function Rulesservice(req: Request, res: Response) {
           message: "No content",
         };
       }
+
       if (code === "C1") {
         throw {
           type: "test",
@@ -90,14 +91,21 @@ async function Rulesservice(req: Request, res: Response) {
       return;
     })
     .catch((error) => {
-      if (error.type === "test") {
+      if (error.response.data.code === "A1") {
         throw {
           type: "test",
-          status: error.status,
+          status: error.response.status,
           message: error.message,
         };
       }
-      if (error.response.data.code === "A1") {
+      if (error.response.data.code === "B1") {
+        throw {
+          type: "test",
+          status: error.response.status,
+          message: error.message,
+        };
+      }
+      if (error.response.data.code === "C1") {
         throw {
           type: "test",
           status: error.response.status,
