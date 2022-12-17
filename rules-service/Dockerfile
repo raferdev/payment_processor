@@ -5,7 +5,6 @@ RUN gem update --system
 COPY . .
 ENV INTERN_TOKEN=cloudwalk_pass
 RUN bundle install
-RUN rails generate model Postbodies --migration=false
 RUN rails db:migrate
 RUN rails db:seed
 
