@@ -21,7 +21,7 @@ describe("RULES-SERVICE TEST: AUTH, SCHEMA, AND BLACKLIST", () => {
 
   it("Send wrong schema, should return error", async () => {
     const body = Factory.request.data();
-    delete body.card_number;
+    delete body.transaction_id;
     try {
       const result = await supertest(app)
         .post(`/health/rulesservice`)
