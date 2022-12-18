@@ -1,5 +1,6 @@
 Blacklist.create!([
-    {	user:	900	},
+{	user:	1	},
+{	user:	900	},
 {	user:	2708	},
 {	user:	3157	},
 {	user:	3584	},

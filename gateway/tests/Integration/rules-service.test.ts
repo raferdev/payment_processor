@@ -4,7 +4,7 @@ import supertest from "supertest";
 import app from "../../src/app.js";
 
 describe("RULES-SERVICE TEST: AUTH, SCHEMA, AND BLACKLIST", () => {
-  it("Send request with invalid intern token, should return error ", async () => {
+  it("Send request with invalid intern token, should return error 401 ", async () => {
     const body = Factory.request.data();
 
     try {
@@ -19,7 +19,7 @@ describe("RULES-SERVICE TEST: AUTH, SCHEMA, AND BLACKLIST", () => {
     }
   });
 
-  it("Send wrong schema, should return error", async () => {
+  it("Send wrong schema, should return error 422", async () => {
     const body = Factory.request.data();
     delete body.transaction_id;
     try {
@@ -34,15 +34,18 @@ describe("RULES-SERVICE TEST: AUTH, SCHEMA, AND BLACKLIST", () => {
     }
   });
 
-  it("Rating test, should return status 200", async () => {
+  it("Send blacklist user (id = 1 default user), should return status 406", async () => {
     const body = Factory.request.data();
+
+    body.user_id = 1;
+
     try {
       const result = await supertest(app)
-        .post(`/health/mlservice`)
+        .post(`/health/rulesservice`)
         .set("authorization", "")
         .send(body);
 
-      expect(result.status).toEqual(200);
+      expect(result.status).toEqual(406);
     } catch (error) {
       expect(error).toBeUndefined();
     }
