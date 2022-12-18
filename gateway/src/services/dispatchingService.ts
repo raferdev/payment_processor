@@ -1,6 +1,7 @@
 import { PaymentType } from "../schemas/apiSchemas.js";
 import axios from "axios";
 import _env from "../config/env.js";
+import _rules from "../config/constRules.js";
 
 async function Dispathing(payment: PaymentType) {
   let recommendation = "approve";
@@ -26,7 +27,7 @@ async function Dispathing(payment: PaymentType) {
 
       console.log(`ML-SERVICE says: the risk is ${percentage}%`);
 
-      if (chance >= 80) {
+      if (chance >= _rules.MAX_RISK_LIMIT) {
         recommendation = "Decline";
         return;
       }

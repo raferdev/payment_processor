@@ -9,6 +9,7 @@ async function Verify(user: Log) {
       message: "Acess Denied!: Too much requests!",
     };
   }
+
   return;
 }
 
