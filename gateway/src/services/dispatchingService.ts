@@ -6,14 +6,18 @@ import _rules from "../config/constRules.js";
 async function Dispathing(payment: PaymentType) {
   let recommendation = "approve";
 
-  const config = {
+  const config_ML_SERVICE = {
     headers: {
       "X-Api-Key": _env.INTERN_TOKEN,
     },
   };
-
+  const config_RULES_SERVICE = {
+    headers: {
+      authorization: _env.INTERN_TOKEN,
+    },
+  };
   await axios
-    .post(_env.ML_SERVER, payment, config)
+    .post(_env.ML_SERVER, payment, config_ML_SERVICE)
     .then((response) => {
       const { chance } = response.data;
       if (!chance || typeof chance !== "number") {
@@ -52,7 +56,7 @@ async function Dispathing(payment: PaymentType) {
   }
 
   await axios
-    .post(_env.RULES_SERVER, payment)
+    .post(_env.RULES_SERVER, payment, config_RULES_SERVICE)
     .then((response) => {
       const { code } = response.data;
       if (!code) {
