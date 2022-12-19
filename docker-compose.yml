@@ -4,7 +4,7 @@ services:
     build: ./gateway
     restart: always
     env_file:
-      - .env
+      - gateway.env
     expose:
       - $PORTGAT
     ports:
@@ -22,13 +22,9 @@ services:
     build: ./ml-service
     restart: always
     env_file:
-      - .env
+      - mlservices.env
     expose:
       - $MLPORT
-    depends_on:
-      - postgres
-      - rulesservices
-      - redis
     networks:
       - cloudwalk_network
   
@@ -36,8 +32,8 @@ services:
     container_name: rulesservices
     build: ./rules-service
     restart: always
-    environment:
-      - INTERN_TOKEN=$INTERN_TOKEN
+    env_file:
+      - rules.env
     expose:
       - $RULESPORT
     depends_on:
@@ -65,9 +61,10 @@ services:
       - $REDISPORT
     env_file:
       - .env
+    depends_on:
+      - mlservices
     networks:
       - cloudwalk_network
 
 networks:
   cloudwalk_network:
-
