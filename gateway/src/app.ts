@@ -13,6 +13,7 @@ app.use(express.json());
 if (_env.MODE === "TEST") {
   app.use("/health", healthRouter);
 }
+
 app.use("/", apiRoute);
 app.use(errorHandlerMiddleware);
 
