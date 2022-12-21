@@ -9,12 +9,12 @@ services:
       - $PORTGAT
     ports:
       - $PORTGAT:$PORTGAT
+    entrypoint: ["npm", "start"]
     depends_on:
       - postgres
       - mlservices
       - rulesservices
       - redis
-    entrypoint: "./wait-for-it.sh mlservices:5000"
     networks:
       - cloudwalk_network
 
@@ -24,6 +24,7 @@ services:
     restart: always
     env_file:
       - mlservices.env
+      - .env.test
     expose:
       - $MLPORT
     depends_on:
