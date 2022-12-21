@@ -3,10 +3,10 @@
   "type": "module",
   "version": "3.0.0",
   "description": "This api will communicate with anti-fraud services.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "build": "tsc && npx prisma generate && npx prisma run deploy",
+    "build": "tsc && npx prisma migrate deploy",
     "test:unit": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --coverage --testPathPattern=tests/Units",
     "test:integrate": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --verbose  --testPathPattern=tests/Integration",
     "test": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i",
