@@ -7,19 +7,19 @@ beforeEach(async () => {
 
 describe("PRISMA CONNECTIVITY TEST: CRUD ", () => {
   it("Create new credentials", async () => {
-    const user = await Factory.validAccess.credentials();
+    const user = await Factory.validAccess.NewUser();
 
-    const result = await Repositories.validAccess.add(user);
-    expect(result.token).toEqual(user.token);
+    const result = await Repositories.validAccess.addUser(user);
+    expect(result.user).toEqual(user.user);
   });
 
   it("Read credential", async () => {
-    const user = await Factory.validAccess.credentials();
+    const user = await Factory.validAccess.NewUser();
 
     try {
-      await Repositories.validAccess.add(user);
-      const readVerify = await Repositories.validAccess.find(user.newUser.user);
-      expect(readVerify.user).toEqual(user.newUser.user);
+      await Repositories.validAccess.addUser(user);
+      const readVerify = await Repositories.validAccess.find(user.user);
+      expect(readVerify.user).toEqual(user.user);
     } catch (error) {
       console.log(error);
       expect(error).toBeUndefined();
@@ -27,11 +27,15 @@ describe("PRISMA CONNECTIVITY TEST: CRUD ", () => {
   });
 
   it("Update credentials", async () => {
-    const user = await Factory.validAccess.credentials();
-    const newToken = await Factory.validAccess.newToken(user.newUser);
+    const user = await Factory.validAccess.NewCredential();
+    const addToken = await Repositories.validAccess.addToken({
+      token: user.token,
+      user_id: user.id,
+      are_valid: true,
+    });
+    const newToken = await Factory.validAccess.NewToken(user);
 
     try {
-      await Repositories.validAccess.add(user);
       const verifyUpdate = await Repositories.validAccess.updateToken(
         user.token,
         newToken
@@ -44,10 +48,9 @@ describe("PRISMA CONNECTIVITY TEST: CRUD ", () => {
   });
 
   it("Delete credentials", async () => {
-    const user = await Factory.validAccess.credentials();
+    const user = await Factory.validAccess.NewCredential();
 
     try {
-      await Repositories.validAccess.add(user);
       await Repositories.validAccess.clean();
 
       const verifyClearning = await Repositories.validAccess.find(

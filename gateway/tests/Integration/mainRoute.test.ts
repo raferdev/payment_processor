@@ -27,22 +27,25 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
     expect(result.statusCode).toEqual(404);
   });
 
-  it("Valid toke can acess", async () => {
+  it("Valid token can acess", async () => {
     jest.clearAllMocks();
 
     const body = Factory.request.data();
-    const user = await Factory.validAccess.credentials();
-    jest.clearAllMocks();
+    const user = await Factory.validAccess.NewCredential();
+    const addToken = await Repositories.validAccess.addToken({
+      token: user.token,
+      user_id: user.id,
+      are_valid: true,
+    });
+
     jest.spyOn(paymentShema, "validate").mockImplementationOnce(() => {
       throw { type: "AuthTest", message: "all ok" };
     });
 
     try {
-      await Repositories.validAccess.add(user);
-
-      const result = await await supertest(app)
+      const result = await supertest(app)
         .post(`/${user.token}`)
-        .set("authorization", user.newUser.user)
+        .set("authorization", addToken.token)
         .send(body);
       expect(result.body.message).toEqual("all ok");
     } catch (err) {
@@ -54,20 +57,24 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
     jest.clearAllMocks();
 
     const body = Factory.request.data();
-    const user = await Factory.validAccess.credentials();
+    const user = await Factory.validAccess.NewCredential();
+    const addToken = await Repositories.validAccess.addToken({
+      token: user.token,
+      user_id: user.id,
+      are_valid: true,
+    });
 
     jest.spyOn(axios, "post").mockImplementationOnce(() => {
       throw { type: "firewallTest", message: "all ok" };
     });
     try {
-      await Repositories.validAccess.add(user);
       await supertest(app)
         .post(`/${user.token}`)
-        .set("authorization", user.newUser.user)
+        .set("authorization", addToken.token)
         .send(body);
       const result = await supertest(app)
         .post(`/${user.token}`)
-        .set("authorization", user.newUser.user)
+        .set("authorization", addToken.token)
         .send(body);
 
       expect(result.body.type).toEqual("Too much requests");
@@ -79,13 +86,17 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
   it("Wrong body schema, this request must fail", async () => {
     jest.clearAllMocks();
     const body = Factory.request.data();
-    const user = await Factory.validAccess.credentials();
+    const user = await Factory.validAccess.NewCredential();
+    const addToken = await Repositories.validAccess.addToken({
+      token: user.token,
+      user_id: user.id,
+      are_valid: true,
+    });
     delete body.transaction_amount;
     try {
-      await Repositories.validAccess.add(user);
       const result = await supertest(app)
         .post(`/${user.token}`)
-        .set("authorization", user.newUser.user)
+        .set("authorization", addToken.token)
         .send(body);
       expect(result.statusCode).toEqual(422);
     } catch (err) {
@@ -96,12 +107,16 @@ describe("TESTING MAIN ROUTE BEHAVIOR", () => {
   it("Acceptable request, must return status 200", async () => {
     jest.clearAllMocks();
     const body = Factory.request.data();
-    const user = await Factory.validAccess.credentials();
+    const user = await Factory.validAccess.NewCredential();
+    const addToken = await Repositories.validAccess.addToken({
+      token: user.token,
+      user_id: user.id,
+      are_valid: true,
+    });
     try {
-      await Repositories.validAccess.add(user);
       const result = await supertest(app)
         .post(`/${user.token}`)
-        .set("authorization", user.newUser.user)
+        .set("authorization", addToken.token)
         .send(body);
 
       expect(

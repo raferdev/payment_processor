@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 
+const INTERN_TOKEN = process.env.INTERN_TOKEN;
 function data() {
   const acess: data = {
     user_id: Number(faker.random.numeric(5)),
@@ -17,10 +18,14 @@ function newToken() {
   const token = faker.datatype.uuid();
   return token;
 }
+function internToken() {
+  return INTERN_TOKEN;
+}
 
 export const request = {
   data,
   newToken,
+  internToken,
 };
 
 type data = {

@@ -7,12 +7,14 @@ async function clean() {
   return;
 }
 
-async function add(validAccess: uniqueValidAccess) {
-  const result = await prisma.user.create({ data: validAccess.newUser });
+async function addUser(validAccess: uniqueValidAccess) {
+  const result = await prisma.user.create({ data: validAccess });
+  return result;
+}
 
-  return await prisma.validAccess.create({
-    data: { user_id: result.id, token: validAccess.token, are_valid: true },
-  });
+async function addToken(data: tokenValidAcces) {
+  const result = await prisma.validAccess.create({ data });
+  return result;
 }
 
 async function find(user: string) {
@@ -41,15 +43,18 @@ async function disconnect() {
 export const validAccess = {
   find,
   clean,
-  add,
+  addUser,
   updateToken,
+  addToken,
   disconnect,
 };
 
 type uniqueValidAccess = {
+  user: string;
+  password: string;
+};
+type tokenValidAcces = {
   token: string;
-  newUser: {
-    user: string;
-    password: string;
-  };
+  user_id: number;
+  are_valid: boolean;
 };
