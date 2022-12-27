@@ -2,7 +2,6 @@
 services:
   gateway:
     container_name: gateway_test
-    restart: always
     environment:
       - SALT_ROUNDS=$SALT_ROUNDS
       - PORTGAT=$PORTGAT
