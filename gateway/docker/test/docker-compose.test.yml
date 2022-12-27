@@ -35,7 +35,6 @@ services:
     build:
       context: ../../../ml-service
       dockerfile: ./docker/Dockerfile
-    restart: always
     environment:
       - INTERN_TOKEN=$INTERN_TOKEN
       - MLPORT=$MLPORT
@@ -56,7 +55,6 @@ services:
     build:
       context: ../../../rules-service
       dockerfile: ./docker/Dockerfile.test
-    restart: always
     environment:
       - INTERN_TOKEN=$INTERN_TOKEN
       - RULESPORT=$RULESPORT
