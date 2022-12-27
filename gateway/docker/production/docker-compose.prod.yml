@@ -1,0 +1,109 @@
+services:
+  gateway:
+    container_name: gateway
+    restart: always
+    environment:
+      - SALT_ROUNDS=$SALT_ROUNDS
+      - PORTGAT=$PORTGAT
+      - JWT_SECRET=$JWT_SECRET
+      - INTERN_TOKEN=$INTERN_TOKEN
+      - DATABASE_URL=$DATABASE_URL
+      - REDIS_URL=$REDIS_URL
+      - ML_SERVER=$ML_SERVER
+      - RULES_SERVER=$RULES_SERVER
+      - MODE=$MODE
+      - ADMIN=$ADMIN
+      - PASSWORD=$PASSWORD
+    build:
+      context: ../../
+      dockerfile: docker/production/Dockerfile.prod
+    expose:
+      - $PORTGAT
+    ports:
+      - $PORTGAT:$PORTGAT
+    depends_on:
+      - postgres
+      - mlservices
+      - rulesservices
+      - redis
+    networks:
+      - cloudwalk_network
+
+  mlservices:
+    container_name: mlservices
+    build:
+      context: ../../../ml-service
+      dockerfile: ./docker/Dockerfile
+    restart: always
+    environment:
+      - INTERN_TOKEN=$INTERN_TOKEN
+      - MLPORT=$MLPORT
+      - MLHOST=$MLHOST
+      - MLDEBUG=$MLDEBUG
+      - MODE=$MODE
+    expose:
+      - $MLPORT
+    depends_on:
+      - redis
+      - postgres
+      - rulesservices
+    networks:
+      - cloudwalk_network
+  
+  rulesservices:
+    container_name: rulesservices
+    build:
+      context: ../../../rules-service
+      dockerfile: ./docker/Dockerfile.prod
+    restart: always
+    environment:
+      - INTERN_TOKEN=$INTERN_TOKEN
+      - RULESPORT=$RULESPORT
+      - RAILS_ENV=$MODE
+      - RAILS_LOG_TO_STDOUT=$RAILS_LOG_TO_STDOUT
+      - RAILS_SERVE_STATIC_FILES=$RAILS_SERVE_STATIC_FILES
+    expose:
+      - $RULESPORT
+    entrypoint: /bin/sh -c "rails db:migrate && rails db:seed && rails server -b $RAILS_HOST"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - cloudwalk_network
+
+  postgres:
+    container_name: postgres
+    image: postgres:12.13-alpine3.17
+    expose:
+      - $POSTGRESPORT
+    environment:
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_DB=$POSTGRES_DB
+    depends_on:
+      - redis
+    volumes:
+      - posgres
+    networks:
+      - cloudwalk_network
+
+  redis:
+    container_name: redis
+    image: redis:7.0.7
+    expose:
+      - $REDISPORT
+    environment:
+      - REDIS_USER=$REDIS_USER
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+      - REDIS_DB=$REDIS_DB
+    volumes:
+      - redis
+    networks:
+      - cloudwalk_network
+
+volumes:
+  redis:
+  postgres:
+  
+networks:
+  cloudwalk_network:

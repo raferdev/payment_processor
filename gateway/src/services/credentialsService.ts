@@ -23,7 +23,7 @@ async function Validate(token: Token, user: string) {
     throw { type: "unauthorized", message: "Denied Acess!" };
   }
 
-  if (result[0].user.user !== userjwt.id) {
+  if (result[0].user.id !== userjwt.id) {
     throw { type: "unauthorized", message: "Denied Acess!" };
   }
   return;
@@ -34,4 +34,4 @@ export const Token = {
 };
 
 type Token = string;
-type userjwt = { id: string };
+type userjwt = { id: number };

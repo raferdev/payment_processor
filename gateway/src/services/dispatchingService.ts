@@ -39,7 +39,9 @@ async function Dispathing(payment: PaymentType) {
       return;
     })
     .catch((error) => {
-      console.log(error);
+      if (_env.MODE === "TEST") {
+        console.log(error);
+      }
       throw {
         type: "Tensorflow Connection",
         message: "Can't connect with server!",
@@ -69,6 +71,13 @@ async function Dispathing(payment: PaymentType) {
       return;
     })
     .catch((error) => {
+      if (_env.MODE === "TEST") {
+        console.log(error);
+      }
+      if (error.response.data.code === "C1") {
+        recommendation = "Decline";
+        return;
+      }
       throw {
         type: "Ruby Connection",
         message: "Can't connect with server!",

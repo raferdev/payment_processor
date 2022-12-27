@@ -8,6 +8,9 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const REDIS_URL = process.env.REDIS_URL;
 const DATABASE_URL = process.env.DATABASE_URL;
 const INTERN_TOKEN = process.env.INTERN_TOKEN;
+const SALT_ROUNDS = +process.env.SALT_ROUNDS;
+const ADMIN = process.env.ADMIN;
+const PASSWORD = process.env.PASSWORD;
 
 const _env = {
   PORT,
@@ -18,6 +21,9 @@ const _env = {
   JWT_SECRET,
   DATABASE_URL,
   INTERN_TOKEN,
+  SALT_ROUNDS,
+  ADMIN,
+  PASSWORD,
 };
 
 export default _env;

@@ -1,0 +1,16 @@
+FROM ruby:3.1.3
+
+WORKDIR /app
+
+RUN apt-get update -qq && apt-get install -y 
+RUN gem update --system
+
+
+COPY Gemfile .
+COPY Gemfile.lock .
+
+RUN bundle config --global frozen 1
+RUN bundle config set --local without 'development test'
+RUN bundle install
+
+COPY . .

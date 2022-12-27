@@ -2,10 +2,22 @@ import os
 import tensorflow as tf
 import flask
 import pandas as pd
-import numpy as np
+from waitress import serve
 from flask_expects_json import expects_json
 from tensorflow import keras
 from flask import jsonify, json
+
+HOST = os.getenv('MLHOST')
+PORT = os.getenv('MLPORT')
+IFDEBUG = os.getenv('MLDEBUG')
+TOKEN = os.getenv('INTERN_TOKEN')
+MODE = os.getenv('MODE')
+
+if IFDEBUG in ['false', 'False', 'FALSE']:
+    DEBUG = False
+
+else:
+    DEBUG = True
 
 file_url = "https://gist.githubusercontent.com/cloudwalk-tests/76993838e65d7e0f988f40f1b1909c97/raw/9ceae962009236d3570f46e59ce9aa334e4e290f/transactional-sample.csv"
 dataframe = pd.read_csv(file_url)
@@ -57,16 +69,24 @@ app = flask.Flask(__name__)
 @expects_json(schema)
 def predict():
     if flask.request.method == "POST":
-        if flask.request.headers.get("X-Api-Key") == os.getenv('INTERN_TOKEN'):
+        if flask.request.headers.get("X-Api-Key") == TOKEN:
+
             sample = json.loads(flask.request.data)
+
             input_dict = {name: tf.convert_to_tensor(
                 [value]) for name, value in sample.items()}
             predictions = model.predict(input_dict)
+
             chance = 100 * predictions[0][0]
+
             return jsonify({"chance": chance, "transaction_id": sample["transaction_id"]}), 200
         else:
             return jsonify({"message": "ERROR: Unauthorized"}), 401
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    if MODE == 'production':
+        serve(app, host=HOST, port=PORT)
+
+    else:
+        app.run(HOST, PORT, DEBUG)

@@ -21,7 +21,7 @@ model User {
 model validAccess {
   id         Int      @id @default(autoincrement())
   token      String   @unique
-  user_id    Int
+  user_id    Int      @unique
   user       User     @relation(fields: [user_id], references: [id])
   are_valid  Boolean
   created_at DateTime @default(now())
