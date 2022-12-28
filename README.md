@@ -24,21 +24,28 @@
 
 - [1 - Project](#1)
 - [1.1 - About](#1.1)
-- [1.2 - Prerequisites](#1.2)
-- [1.3 - Installing](#1.3)
-- [1.4 - Running](#1.4)
-- [1.5 - Usage](#1.5)
-- [1.6 - Tests](#1.6)
+- [1.2 - Guide](#1.2)
+- [1.3 - Prerequisites](#1.3)
+- [1.4 - Installing](#1.4)
+- [1.5 - Running](#1.5)
+- [1.6 - Usage](#1.6)
+- [1.7 - Tests](#1.7)
 - [2 - Acquirer Market](#2)
 - [2.1 Info flow](#2.1)
 - [2.2 Info flow](#2.2)
 - [Links](#links)
 
+---
+
 ## 🧐 Payment Validation Simulated <a name = "1"></a>
 
-### About <a name = "1.1"></a>
+### 1.1 - About <a name = "1.1"></a>
 
+---
+
+<p align="center">
 On this project i implement a multisystem solution, one system will process the first request and using some protections will reject or not the request initially. If it is ok, this system make two request to other two systems at the same time, if one of these denied the transaction an error occur stopping the process and responding with reject message. One of these systems is implemented using machine learning, which return a percentage of fraud and other system is have static rules like a blacklist of users. The image bellow explain it better.
+</p>
 
 <img src="./data/mindmap.jpg">
 
@@ -50,87 +57,41 @@ On this project i implement a multisystem solution, one system will process the 
 
 - **Dockerized**: All this project run just running 'docker-compose up', eacth system have a specify container.
 
-### Prerequisites <a name="1.2"></a>
+---
 
-You need install **_GIT_** if you don't already have, to clone project,.
+### 1.2 - Guide <a name="1.2"></a>
 
-<a href="https://git-scm.com/downloads">Click here</a> or Acess:
+---
 
-```
-https://git-scm.com/downloads
-```
+- **1.2.1 - Terminal commands**
 
-You need install **_Docker_** on your machine if you don't already have.
+  When you see something like this:
 
-<a href="https://docs.docker.com/get-docker">Click here</a> or Acess:
+  ```
+  $ echo 'hello'
+  ```
 
-```
-https://docs.docker.com/get-docker/
-```
+  Is for copy all the command after the '$' symbol and run on your linux like terminal.
 
-And use the step-by-step doc to download and install on your specific system.
+  Before the '$' symbol maybe the current path what are needed to run the command is described.
+  Like:
 
-### Installing <a name="1.3"></a>
+  ```
+  ...home$ echo 'hello'
+  ```
 
-**1** - Clone on your local system
+  On this case to run it _echo 'hello'_
+  inside the _./home_ directory.
 
-```
-git clone https://github.com/raferdev/clouckwalk
-```
-
-**2** - Go to project path
-
-```
-cd clouckwalk
-```
-
-**3** - Create env file
-
-You can rename the ".env.exemple" file to ".env", just removing ".exemple" and save, or follow this steps to create new one:
-
-- Open a text editor or other editor do you prefeer, create this variables like below and save file with name '.env'.
-
-```
-MLPORT=5000
-DATABASE_URL="postgresql://cloudwalk:cloudwalkpass@postgres:5432/cloudwalkdb?schema=public"
-POSTGRESPORT=5432
-RULESPORT=3000
-ML_SERVER="http://mlservices:5000/"
-PORT=3000
-PORTGAT=5050
-POSTGRES_DB=cloudwalkdb
-POSTGRES_USER=cloudwalk
-POSTGRES_PASSWORD=cloudwalkpass
-REDISPORT=6379
-REDIS_URL=redis://@redis:6379
-RULES_SERVER="http://rulesservices:3000/"
-```
-
-You can change the values of variables if you want or need.
-
-### Running <a name="1.4"></a>
-
-Use on terminal:
-
-```
-docker-compose up
-```
-
-_The attached console will show "SERVER UP: ON PORT ${PORT}"._
-
-### 🎈 Usage <a name="1.5"></a>
-
-Now you will need one tool to make requests and interact whith your API. Some famous API Clients are <a href="https://insomnia.rest/download">Insomnia</a>, <a href="https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client">Thunder CLient</a> to VSCode users, <a href="https://www.postman.com/">Postman</a> and many others, like browsers plugins. If you dont use to complex jobs any of these will help you.
-
-- **GUIDE** :
+- **1.2.2 - API Description**
 
   **HTTP METHOD** - _/route_ - Little description of it behaviour.
 
   ```
-    Received or sended object schema.
-    Ex: {
-    "text":"Lorem ipsum..."
-    }
+  Received or sended object schema.
+  Ex: {
+  "text":"Lorem ipsum..."
+  }
   ```
 
   _Final thoughts about API behaviour_
@@ -143,31 +104,242 @@ Now you will need one tool to make requests and interact whith your API. Some fa
 
   ```
   {
-    "message":"I'm Alive!"
+  "message":"I'm Alive!"
   }
   ```
 
   Simple way to verify if API is up. _Maybe is not implemented on this project_
 
-  ***
-
   **Usage** - In this case you will make a GET request on http://localhost:5000/health. And will receive the JSON object "message: I'm Alive!" on the console, terminal or display, depending on the case.
 
+**Now you can understand better the steps below.**
+
+---
+
+### 1.3 - Prerequisites <a name="1.3"></a>
+
+---
+
+- **1.3.1 - API Client**
+
+  You will need one tool to make requests and interact with your API. Some famous API Clients are <a href="https://insomnia.rest/download">Insomnia</a>, <a href="https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client">Thunder CLient</a> to VSCode users, <a href="https://www.postman.com/">Postman</a> and many others, like browsers plugins. If you dont use to complex jobs any of these will help you.
+
+- **1.3.2 - Git**
+
+  You need install **_GIT_** if you don't already have, to clone project,.
+
+  <a href="https://git-scm.com/downloads">Click here</a> or Acess:
+
+  `https://git-scm.com/downloads`
+
+- **1.3.3 - Docker**
+
+  You need install **_Docker_** on your machine if you don't already have.
+
+  <a href="https://docs.docker.com/get-docker">Click here</a> or Acess:
+
+  `https://docs.docker.com/get-docker/`
+
+  And use the step-by-step doc to download and install on your specific system.
+
+---
+
+### 1.4 - Installing <a name="1.4"></a>
+
+---
+
+- **1.4.1 - Clone on your local system**
+
+  ```
+  $ git clone https://github.com/raferdev/clouckwalk
+  ```
+
+- **1.4.2 - Go to project path**
+
+  ```
+  $ cd clouckwalk
+  ```
+
+- **1.4.3 - Create env file**
+
+  **WARN** : To emprove more simplicity and customised options i have opted for divide 3 paths: production, development and test. For each path of this you can set a ".env" file which docker will use to run in this specific environment and set the instructions for production, development or test.
+
+  _Separated in Recommended(1) or Advanced(2) method, choose one._
+
+  **.1 - Recommended**: You can rename the ".env.exemple" file to ".env", just removing ".exemple" and save, the exemple file have the basic configuration to execute on controlled environment, but not to run on real production (99% chance are of you don't need change it ).
+
+  **Ok, where is the .env.exemple file?**
+
+  **.1.1** First go to the docker path
+
+  ```
+  ...cloudwalk$ cd ./gateway/docker
+  ```
+
+  You can run:
+
+  ```
+  ...docker$ ls
+  ```
+
+  Expected output:
+
+  ```
+  development
+  production
+  test
+  ```
+
+  **.1.2** And now you can choose who path open, like:
+
+  ```
+  ...docker$ cd development
+  ```
+
+  And change the '.env.exemple' file name to '.env'
+
+  ```
+  ...development$ mv .env.exemple .env
+  ```
+
+  **Advise:** Maybe you will need use 'sudo' command to run with admin privileges like it: 'sudo mv...'.
+
+  ```
+  $ sudo mv .env.exemple .env
+  ```
+
+  If you want to change all the env files to run in production, development and test use _cd .._ command to return to latest path.
+
+  ```
+  $ cd ..
+  ```
+
   ***
 
-**LET'S GO** - API description.
+  **.2 - Advanced:** Open a text editor or other editor do you prefeer, create this variables like below and save file with name '.env'. It need to be in _./cloudwalk/gateway/docker/(production/development/test)_ path.
 
-**POST** - _/:token_ - The token is sended on the route, so dont need header with authorization, the api verify if its the same stored on credentials.
+  ```
+  # NodeJS
 
-Exemple of route with token (can use):
+  PORTGAT=
+  SALT_ROUNDS=
+  JWT_SECRET=
+  INTERN_TOKEN=
+  ADMIN=
+  PASSWORD=
+  MODE=
 
-```
-http://localhost:5050/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-```
+  # Postgres
 
-**BODY:**
+  DATABASE_URL=
+  POSTGRESPORT=
+  POSTGRES_DB=
+  POSTGRES_USER=
+  POSTGRES_PASSWORD=
 
-```
+  # Redis
+
+  REDIS_URL=
+  REDISPORT=
+  REDIS_USER=
+  REDIS_PASSWORD=
+  REDIS_DB=$REDIS_DB
+
+  # Rails
+
+  RULESPORT=
+  RULES_SERVER=
+  RAILS_HOST=
+  RAILS_LOG_TO_STDOUT=
+  RAILS_SERVE_STATIC_FILES=
+
+  # TensorFLow
+
+  MLPORT=
+  MLHOST=
+  MLDEBUG=
+  ML_SERVER=
+  ```
+
+---
+
+### 1.5 - Running <a name="1.5"></a>
+
+---
+
+- **1.5.1 - Go to the npm path to run the scripts.**
+
+  **Use on terminal:**
+
+  If you are on the main path.
+
+  ```
+  ...cloudwalk$ cd gateway
+  ```
+
+  If you are inside another path use _cd .._ to return.
+
+  ```
+  $ cd ..
+  ```
+
+- **1.5.2 - Execute the script.**
+
+  Now just specify what you want run: production, development or test.
+
+  **Production:**
+
+  ```
+  ...gateway$ npm run prod
+  ```
+
+  **Development:**
+
+  ```
+  ...gateway$ npm run dev
+  ```
+
+  **Test:** The tests are more described [here](#1.7)
+
+  ```
+  ...gateway$ npm run test
+  ```
+
+  **Now the magic of Docker will setup all the enviroment and start the containers to run the project**
+
+  _Maybe if your network, ram, or cache don't colaborate are a good moment to prepare a coffee and eat some snacks._
+
+---
+
+### 1.6 - 🎈 Usage <a name="1.6"></a>
+
+---
+
+**IMPORTANT:** When you run the npm scripts on the terminal a admin token will be shown, and you can use to test yourself the end points. The token it's appear like bellow and you can copy (normally using Ctrl+Shift+C on terminal).
+
+<img src="./data/terminal-token.png">
+
+- **1.6.1 - The Connection**
+
+  The docker container will set the port of your system with the port of the gateway container and it is specified on the .env file with the variable **PORTGAT**, the default is 5050 and if wasnt changed the connection with the project will be on the address:
+
+  ```
+  http://localhost:5050/
+  ```
+
+- **1.6.2 - Routes and Methods**
+
+  **POST** - _/:token_ - The token is sended on the route, so dont need header with authorization, the api verify if its the same stored on credentials.
+
+  Exemple of route with token:
+
+  ```
+  http://localhost:5050/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+  ```
+
+  **BODY:**
+
+  ```
   {
   "user_id":21320399,                          (number)
   "transaction_id": 92895,                     (number)
@@ -177,27 +349,29 @@ http://localhost:5050/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3O
   "transaction_amount": 734.87, (number)
   "device_id": 497105 (number)
   }
-```
+  ```
 
-**The possible messages and exemples bellow:**
+  **The possible messages and exemples bellow:**
 
-**Approved**
-<img src="./data/exemple1.png">
+  **Approved**
 
-**Denied**
-<img src="./data/exemple2.png">
+  <img src="./data/exemple1.png">
 
-**Transaction reject by too much requests by same user**
+  **Denied**
 
-<img src="./data/exemple3.png">
+  <img src="./data/exemple2.png">
 
-**If you want see the rate by the machine learning you can see the terminal like this message**
+  **Transaction reject by too much requests by same user**
 
-<img src="./data/exemple5.png">
+  <img src="./data/exemple3.png">
 
-## 🧐 Question 1 <a name = "1"></a>
+  **If you want see the rate by the machine learning you can see the terminal like this message**
 
-#### 1.1
+  <img src="./data/exemple5.png">
+
+  ## 🧐 Acquirer Market <a name = "2"></a>
+
+  #### 2.1
 
 So the custumer, like me a fewer days before, think the process is just check your password and funds, big mistake.
 
