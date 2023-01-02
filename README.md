@@ -31,13 +31,14 @@
 - [1.6 - Usage](#1.6)
 - [1.7 - Tests](#1.7)
 - [2 - Acquirer Market](#2)
-- [2.1 Info flow](#2.1)
-- [2.2 Info flow](#2.2)
+- [2.1 Money Flow and Information Flow](#2.1)
+- [2.2 Chargeback and Refound](#2.2)
+- [2.3 Hypothetical Transactional Data](#2.3)
 - [Links](#links)
 
 ---
 
-## 🧐 Payment Validation Simulated <a name = "1"></a>
+## 1 - 🧐 Payment Validation Simulated <a name = "1"></a>
 
 ### 1.1 - About <a name = "1.1"></a>
 
@@ -299,7 +300,7 @@ On this project i implement a multisystem solution, one system will process the 
   ...gateway$ npm run dev
   ```
 
-  **Test:** The tests are more described [here](#1.7)
+  **Test:** The tests are more described [1.7 - Tests](#1.7)
 
   ```
   ...gateway$ npm run test
@@ -341,17 +342,17 @@ On this project i implement a multisystem solution, one system will process the 
 
   ```
   {
-  "user_id":21320399,                          (number)
-  "transaction_id": 92895,                     (number)
-  "merchant_id": 2708,                         (number)
-  "card_number": "444456******4210",           (string)
+  "user_id":21320399,                              (number)
+  "transaction_id": 92895,                         (number)
+  "merchant_id": 2708,                             (number)
+  "card_number": "444456******4210",               (string)
   "transaction_date": "2019-12-01T22:45:37873639", (string)
-  "transaction_amount": 734.87, (number)
-  "device_id": 497105 (number)
+  "transaction_amount": 734.87,                    (number)
+  "device_id": 497105                              (number)
   }
   ```
 
-  **The possible messages and exemples bellow:**
+  **The possible responses and exemples bellow:**
 
   **Approved**
 
@@ -369,41 +370,56 @@ On this project i implement a multisystem solution, one system will process the 
 
   <img src="./data/exemple5.png">
 
-  ## 🧐 Acquirer Market <a name = "2"></a>
+---
 
-  #### 2.1
+### 1.7 - Tests <a name="1.7"></a>
 
-So the custumer, like me a fewer days before, think the process is just check your password and funds, big mistake.
+On this project i first make the integration tests, this type of tests can check if all the units needed to a functionality, and if these are working correctly together. The tests will run automatically when you use _**npm run test**_ like described on (1.5 - Running)[#1.5] topic.
 
-Client click on "confirm" using your machine card or other payment connector and the info flows like: (When exist Sub-Acquirer)
+The expected output after all the container process is like the image below.
 
-- -> Gateway -> Sub-Acquirer -> Acquirer -> Card brands -> Issuing Bank.
+<img src="./data/passing-tests.png">
 
-And the money flows.
+Telling us the numbers of passing and failed tests. Above this message the tests are more described, and below this the message the containers stopping is shown.
 
-- -> Issuing Bank -> Card Brands -> Acquirer -> Sub-Aquirer -> Gateway -> Founds to Merchant
+---
 
-Some steps depending of the business and payment method are the same or dont are needed.
+## 2 - 🧐 Acquirer Market <a name = "2"></a>
 
-#### 1.2
+I will explain the role players involved on the traffic of the information and the money, with his basic purpose existence. The acquirer market involve a lot of steps, laws, technology, and a collaboration of many companies. Each second of the transaction influence the chance of the customers decline the purchase, of some timeout occur, and many others aspects that impact the rate of transactions approved, this impact direcly the merchant and, in turn, all the role players. On the other hand it's not a good play just focus on speed because the elevated risk of fraud or errors that can broke the creditors which have to repasse to his clients, increasing the risk of the operation, costs, fees and judicial process.
 
-- Acquirer is the part specializes in processing payments, that can offer to merchant multiple payment methods. The acquirer will credit the merchant with the founds.
-- Sub-aquirer can process the payment and connect the merchant too but don't have all autonomy, so it's connect the merchant to acquirer.
-- Gateway is responsable to communicate the transactions to the players like acquirer, bank issuer... and if approve or not.
+### 2.1 - Information Flow and Money Flow <a name = "2.1"></a>
 
-On the flow that it's show on 1.1 the merchant not necessarly needs the sub-acquirer to intermediate the process, but the sub-aquirer can facility the payment process. The acquirer on other hand is are always required because the acquirer how transfer the funds to merchant and confirm the settlement. And the gateway payment is the way all these players can communicate and confirm or not the process, depending of the answer of these the gateway can reject the payment.
+---
 
-#### 1.3
+First of all we need understand the roles, because depending the transaction type, like credit or debit, some steps aren't the same way, but basically we have this players:
+
+- You, the customer.
+- Merchant.
+- Gateway.
+- Payment Processor.
+- Acquirer Bank.
+- Issuer Bank.
+- Cards Brand System.
+- Sub-Acquirer.
+
+You will purcharse something, and to do that you have your bank account, your bank is named on this roadmap like **_issuer bank_**, the bank which have your founds and informations to confirm the acquisition. On the other hand the merchant have his bank account too and this bank is named **_acquirer bank_**, this is the bank which make the settlement of founds to merchant.
+
+Now you may think it's just a linear information route, and the banks can communicate with itselves and resolve that, but is a very different type of operation. The banks don't take care of the terminal points on merchant's store, before and after the checkout some system is needed to deliver this information, and they don't have the systems that connect all each others, so to make this really possible is necessary an intermediate system which can haddle the requests and take care of this information, sharing your approvement or his rejection, and this player is the **_gateway_**. The gateway is a company which will connect all players and return if the transaction is accepted or not. So now we need understand what are needed to validate it, the first thing is send the information to acquirer bank which have the responsabilitie about the merchant methods of payments, score risk of transactions, and manage the your founds, this player are the more relevant on the process, because is the responsable to garantee the settlement of this transaction on determinated period, so possible chargebacks, refounds and invalid transferences which aren't recognized before the confirmation to customer, will generate more costs to manage this founds on this complex system and the companie and the merchant will have lost.
+
+Next step is send to _**cards brand network**_, this companie have responsabilities accepting and connecting customer bank (bank issuer) the request information, this step garantee some rules and schemas of the specific brand card which are used. And now we can call the _**issuer bank**_, on this step the customer data are check and the founds. The information return on the same way to gateway network with the message of sucess or not, but this transference are really complete in the future.
+
+The real money are moved after the confirmation of the process, and because of this invalid processes will result in charges to the responsable of moving and settlements merchants founds, that are que acquirer bank role, so the acquirer bank in the future, maybe seconds, hours, days, weeks, will resolve the transaction information receiving and giving the respective amount to the merchant account.
+
+Other player can appear connecting the merchant to the acquirer bank, without the gateway the _**sub-acquirer**_ are the companie which can make the processing of the payment before send to the acquirer bank, connecting with the other players but don't have all the autonomy of the acquirer bank which take your settlement part anyway.
+
+### 2.2 - Chargeback and Refound <a name = "2.2"></a>
 
 The chargebacks occur when customer don't recognize the payment like valid, when it's by fraud, abuse... And the acconting already happened, so the payment must be inspected and the opposite part have to prove validity, causing feels and cost to process. On the other hand the cancel of payment occur before the acconting, a day or hours and the transaction only "desapear" dont ocasionating more cost's. The chargebacks hurts merchant's chargeback-to-transaction ratio and thats will impact his credibility, besides have to pay feels.This chargebacks only occur when are know fraud, so it's much better detect this fraud before occur, and with caution to don't reject valid operations.
 
-## 🧐 Question 2 <a name = "2"></a>
-
-#### 2.1
+### 2.3 - Hypothetical Transactional Data <a name = "2.3"></a>
 
 The first thing that is visible is the lack on device_id in some rows, but after analyzing better this does not look to make a difference. Trying to understand a pattern the multiple transactions over a short period looks like relevant but nothing i see is deterministic.
-
-#### 2.2
 
 A GPS location of the transaction to determinate nearly impossible payment on different locations. History of payments of a user, merchant, device to understand some pattern maybe, providing a rate of risk. And maybe a obvious thing is a list of valid devices_id, merchants_id...
 
@@ -411,20 +427,7 @@ A GPS location of the transaction to determinate nearly impossible payment on di
 
 <img align="right" height="100px" src="./data/cloudwalk.gif" alt="Project logo">
 
-**1.1, 1.2, 1.3, 2.1, 2.2**
-
-- Payment Authorization vs. Settlement: What’s the Difference? <a href="https://www.tokenex.com/blog/payment-authorization-vs-settlement-whats-the-difference/">page.</a>
-
-- Payments Explained <a href="https://business.ebanx.com/en/resources/payments-explained">page.</a>
-
-- Differences Between Refund, Cancel, and Chargeback? <a href="https://mahmutgulerce.com/fintech-101-difference-between-cancel-refund-chargeback/">page.</a>
-
-- What’s the difference between a merchant acquirer and payment processor? <a href="https://www.globalprocessing.com/news/blog/difference-between-merchant-acquirer-and-payment-processor">page.</a>
-
-- What is the role of financial agents in the payment flow of an application in Brazil? <a href="https://help.vtex.com/tutorial/what-is-the-difference-between-acquirer-brand-gateway-and-sub-acquirer-in-brazil--1dyPJ3gQCCO4ea2o6OMgCi#gateway">page.</a>
-- How Payment Disputes Impact Both Merchants and Consumers <a href="https://chargebacks911.com/disputes/">page.</a>
-
-**3.1**
+**1# About Project**
 
 - Get Started: 3 Ways to Load CSV files into Colab <a href="https://towardsdatascience.com/3-ways-to-load-csv-files-into-colab-7c14fcbdcb92">page.</a>
 - Keras Documentation <a href="https://keras.io/getting_started/">page.</a>
@@ -439,3 +442,16 @@ A GPS location of the transaction to determinate nearly impossible payment on di
 - A Simple Keras + deep learning REST API. <a href="https://github.com/jrosebr1/simple-keras-rest-api">page.</a>
 
 - The Rails Command Line. <a href="https://guides.rubyonrails.org/command_line.html">page.</a>
+
+**2# About Acquirer Market**
+
+- Payment Authorization vs. Settlement: What’s the Difference? <a href="https://www.tokenex.com/blog/payment-authorization-vs-settlement-whats-the-difference/">page.</a>
+
+- Payments Explained <a href="https://business.ebanx.com/en/resources/payments-explained">page.</a>
+
+- Differences Between Refund, Cancel, and Chargeback? <a href="https://mahmutgulerce.com/fintech-101-difference-between-cancel-refund-chargeback/">page.</a>
+
+- What’s the difference between a merchant acquirer and payment processor? <a href="https://www.globalprocessing.com/news/blog/difference-between-merchant-acquirer-and-payment-processor">page.</a>
+
+- What is the role of financial agents in the payment flow of an application in Brazil? <a href="https://help.vtex.com/tutorial/what-is-the-difference-between-acquirer-brand-gateway-and-sub-acquirer-in-brazil--1dyPJ3gQCCO4ea2o6OMgCi#gateway">page.</a>
+- How Payment Disputes Impact Both Merchants and Consumers <a href="https://chargebacks911.com/disputes/">page.</a>
