@@ -152,13 +152,13 @@ On this project i implement a multisystem solution, one system will process the 
 - **1.4.1 - Clone on your local system**
 
   ```
-  $ git clone https://github.com/raferdev/clouckwalk
+  $ git clone https://github.com/raferdev/cloudwalk
   ```
 
 - **1.4.2 - Go to project path**
 
   ```
-  $ cd clouckwalk
+  $ cd cloudwalk
   ```
 
 - **1.4.3 - Create env file**
@@ -374,7 +374,7 @@ On this project i implement a multisystem solution, one system will process the 
 
 ### 1.7 - Tests <a name="1.7"></a>
 
-On this project i first make the integration tests, this type of tests can check if all the units needed to a functionality, and if these are working correctly together. The tests will run automatically when you use _**npm run test**_ like described on (1.5 - Running)[#1.5] topic.
+On this project i first make the integration tests, this type of tests can check if all the units needed to a functionality, and if these are working correctly together. The tests will run automatically when you use _**npm run test**_ like described on [1.5 - Running](#1.5) topic.
 
 The expected output after all the container process is like the image below.
 
