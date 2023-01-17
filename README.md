@@ -158,7 +158,7 @@ On this project i implement a multisystem solution, one system will process the 
 - **1.4.2 - Go to project path**
 
   ```
-  $ cd paypro
+  $ cd payment_processor
   ```
 
 - **1.4.3 - Create env file**
