@@ -16,7 +16,7 @@ services:
       - rulesservices
       - redis
     networks:
-      - cloudwalk_network
+      - paypro_network
 
   mlservices:
     container_name: mlservices
@@ -31,7 +31,7 @@ services:
       - postgres
       - rulesservices
     networks:
-      - cloudwalk_network
+      - paypro_network
   
   rulesservices:
     container_name: rulesservices
@@ -45,7 +45,7 @@ services:
       - postgres
       - redis
     networks:
-      - cloudwalk_network
+      - paypro_network
 
   postgres:
     container_name: postgres
@@ -57,7 +57,7 @@ services:
     depends_on:
       - redis
     networks:
-      - cloudwalk_network
+      - paypro_network
 
   redis:
     container_name: redis
@@ -67,7 +67,7 @@ services:
     env_file:
       - .env
     networks:
-      - cloudwalk_network
+      - paypro_network
 
 networks:
-  cloudwalk_network:
+  paypro_network:

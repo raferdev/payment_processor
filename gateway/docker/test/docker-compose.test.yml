@@ -28,7 +28,7 @@ services:
       - rulesservices
       - redis
     networks:
-      - cloudwalk_network
+      - paypro_network
 
   mlservices:
     container_name: mlservices_test
@@ -48,7 +48,7 @@ services:
       - postgres
       - rulesservices
     networks:
-      - cloudwalk_network
+      - paypro_network
   
   rulesservices:
     container_name: rulesservices_test
@@ -68,7 +68,7 @@ services:
       - postgres
       - redis
     networks:
-      - cloudwalk_network
+      - paypro_network
 
   postgres:
     container_name: postgres_test
@@ -84,7 +84,7 @@ services:
     volumes:
       - posgres
     networks:
-      - cloudwalk_network
+      - paypro_network
 
   redis:
     container_name: redis_test
@@ -98,11 +98,11 @@ services:
     volumes:
       - redis
     networks:
-      - cloudwalk_network
+      - paypro_network
 
 volumes:
   redis:
   postgres:
   
 networks:
-  cloudwalk_network:
+  paypro_network:
