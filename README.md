@@ -1,21 +1,21 @@
 <p align="center">
-<img src="./data/readme.png">
+<img src="./data/logo.png">
 </p>
 
-<h3 align="center">Risk Test</h3>
+<h3 align="center">Payment Processor</h3>
 
 ---
 
 <p align="center">
-<img src="https://img.shields.io/github/actions/workflow/status/raferdev/cloudwalk/maintest.yml?style=for-the-badge">
-<img src="https://img.shields.io/github/last-commit/raferdev/cloudwalk?style=for-the-badge">
-<img src="https://img.shields.io/github/languages/count/raferdev/cloudwalk?style=for-the-badge">
-<img src="https://img.shields.io/github/license/raferdev/cloudwalk?style=for-the-badge">
+<img src="https://img.shields.io/github/actions/workflow/status/raferdev/payment_processor/maintest.yml?style=for-the-badge">
+<img src="https://img.shields.io/github/last-commit/raferdev/payment_processor?style=for-the-badge">
+<img src="https://img.shields.io/github/languages/count/raferdev/payment_processor?style=for-the-badge">
+<img src="https://img.shields.io/github/license/raferdev/payment_processor?style=for-the-badge">
 </p>
 
 ---
 
-<p align="center"> First of all this project make me had a lot of fun, and learn a lot, thanks for the opportunity. Here you will see the answer about some questions and a self implement solution of payment analysis, i hope you enjoy it. This project use, docker, docker-compose, python, machine learning, ruby on rails, nodejs and testing with jest. It's a first time using some of these technologies.
+<p align="center"> Here you will see a self implemented idea about payment processing and fraud analisys, this is just a little POC ilustrating a solution on acquirer market. This project use, docker, docker-compose, python, machine learning, ruby on rails, nodejs and testing with jest.
 </p>
 
 ---
@@ -152,13 +152,13 @@ On this project i implement a multisystem solution, one system will process the 
 - **1.4.1 - Clone on your local system**
 
   ```
-  $ git clone https://github.com/raferdev/cloudwalk
+  $ git clone https://github.com/raferdev/payment_processor
   ```
 
 - **1.4.2 - Go to project path**
 
   ```
-  $ cd cloudwalk
+  $ cd paypro
   ```
 
 - **1.4.3 - Create env file**
@@ -174,7 +174,7 @@ On this project i implement a multisystem solution, one system will process the 
   **.1.1** First go to the docker path
 
   ```
-  ...cloudwalk$ cd ./gateway/docker
+  ...paypro$ cd ./gateway/docker
   ```
 
   You can run:
@@ -217,7 +217,7 @@ On this project i implement a multisystem solution, one system will process the 
 
   ***
 
-  **.2 - Advanced:** Open a text editor or other editor do you prefeer, create this variables like below and save file with name '.env'. It need to be in _./cloudwalk/gateway/docker/(production/development/test)_ path.
+  **.2 - Advanced:** Open a text editor or other editor do you prefeer, create this variables like below and save file with name '.env'. It need to be in _./paypro/gateway/docker/(production/development/test)_ path.
 
   ```
   # NodeJS
@@ -275,7 +275,7 @@ On this project i implement a multisystem solution, one system will process the 
   If you are on the main path.
 
   ```
-  ...cloudwalk$ cd gateway
+  ...paypro$ cd gateway
   ```
 
   If you are inside another path use _cd .._ to return.
@@ -424,8 +424,6 @@ The first thing that is visible is the lack on device_id in some rows, but after
 A GPS location of the transaction to determinate nearly impossible payment on different locations. History of payments of a user, merchant, device to understand some pattern maybe, providing a rate of risk. And maybe a obvious thing is a list of valid devices_id, merchants_id...
 
 ## 🎉 Links <a name = "links"></a>
-
-<img align="right" height="100px" src="./data/cloudwalk.gif" alt="Project logo">
 
 **1# About Project**
 

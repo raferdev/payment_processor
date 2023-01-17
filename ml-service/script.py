@@ -19,7 +19,7 @@ if IFDEBUG in ['false', 'False', 'FALSE']:
 else:
     DEBUG = True
 
-file_url = "https://gist.githubusercontent.com/cloudwalk-tests/76993838e65d7e0f988f40f1b1909c97/raw/9ceae962009236d3570f46e59ce9aa334e4e290f/transactional-sample.csv"
+file_url = "https://gist.githubusercontent.com/paypro-tests/76993838e65d7e0f988f40f1b1909c97/raw/9ceae962009236d3570f46e59ce9aa334e4e290f/transactional-sample.csv"
 dataframe = pd.read_csv(file_url)
 
 val_dataframe = dataframe.sample(frac=0.2, random_state=2000)
